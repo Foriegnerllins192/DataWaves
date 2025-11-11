@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment - DataWay</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"><a href="index.html">DataWay</a></div>
+    <ul class="nav-links">
+      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
+      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
+      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
+    </ul>
+    <div class="auth-links">
+      <!-- User info will be displayed here after login -->
+      <div id="user-info" style="display: none;">
+        <a href="account.html" class="btn-dashboard" id="user-button" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;"></a>
+        | <a href="#" onclick="logout()" class="btn-logout">Logout</a>
+      </div>
+      <!-- Default auth links for logged out users -->
+      <div id="auth-links-default">
+        <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
+       |<a href="account.html" class="btn-dashboard">Account</a> 
+      </div>
+    </div>
+  </nav>
+
+  <!-- Payment Form -->
+  <section class="container">
+    <a href="buy-plan.html" class="back-button"><i class="fas fa-arrow-left"></i> Back to Plans</a>
+    <h2>Complete Payment</h2>
+    
+    <div class="selected-plan">
+      <h3>Selected Plan: <span id="selectedPlanName">None</span></h3>
+      <p>Network: <span id="selectedPlanNetwork">None</span></p>
+      <p>Price: <span id="selectedPlanPrice">GHC 0.00</span></p>
+    </div>
+
+    <form id="paymentForm">
+      <label for="payment_method">Payment Method:</label>
+      <select id="payment_method" name="payment_method" required>
+        <option value="">-- Select Payment Method --</option>
+        <option value="paystack">Paystack</option>
+        <option value="momo">Mobile Money</option>
+      </select>
+
+      <div id="momo-details" class="payment-details" style="display: none;">
+        <label for="momo_number">Mobile Money Number:</label>
+        <input type="tel" id="momo_number" name="momo_number" placeholder="Enter mobile money number" />
+        <small>Please ensure this number is registered for mobile money</small>
+      </div>
+
+      <label for="confirmation_method">Where do you want to receive your confirmation message?</label>
+      <select id="confirmation_method" name="confirmation_method" required>
+        <option value="">-- Select Confirmation Method --</option>
+        <option value="sms">SMS</option>
+        <option value="email">Email</option>
+      </select>
+
+      <div id="confirmation-contact-container" style="display: none;">
+        <label id="confirmation_contact_label" for="confirmation_contact"></label>
+        <input type="text" id="confirmation_contact" name="confirmation_contact" />
+      </div>
+
+      <button type="submit">Pay Now</button>
+    </form>
+
+    <div id="momo-status" class="alert" style="display: none;"></div>
+    <div id="alert" class="alert"></div>
+  </section>
+
+  <script>
+    let momoTransactionId = null;
+    let momoStatusCheckInterval = null;
+
+    // Handle payment method selection
+    document.getElementById('payment_method').addEventListener('change', function() {
+      const momoDetails = document.getElementById('momo-details');
+      if (this.value === 'momo') {
+        momoDetails.style.display = 'block';
+      } else {
+        momoDetails.style.display = 'none';
+      }
+    });
+
+    // Handle confirmation method selection
+    document.getElementById('confirmation_method').addEventListener('change', function() {
+      const container = document.getElementById('confirmation-contact-container');
+      const label = document.getElementById('confirmation_contact_label');
+      const input = document.getElementById('confirmation_contact');
+      
+      if (this.value === 'sms') {
+        container.style.display = 'block';
+        label.textContent = 'Phone Number:';
+        input.placeholder = 'Enter phone number for SMS';
+        input.type = 'tel';
+      } else if (this.value === 'email') {
+        container.style.display = 'block';
+        label.textContent = 'Email Address:';
+        input.placeholder = 'Enter email address';
+        input.type = 'email';
+      } else {
+        container.style.display = 'none';
+      }
+    });
+
+    // Handle form submission
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const paymentMethod = document.getElementById('payment_method').value;
+      const confirmationMethod = document.getElementById('confirmation_method').value;
+      const confirmationContact = document.getElementById('confirmation_contact').value;
+      const planId = new URLSearchParams(window.location.search).get('plan_id');
+      const phoneNumber = new URLSearchParams(window.location.search).get('phone');
+      
+      if (!planId || !phoneNumber) {
+        alert('Missing plan or phone number information');
+        return;
+      }
+      
+      if (!confirmationMethod) {
+        alert('Please select a confirmation method');
+        return;
+      }
+      
+      if (confirmationMethod && !confirmationContact) {
+        alert('Please enter your ' + (confirmationMethod === 'sms' ? 'phone number' : 'email address'));
+        return;
+      }
+      
+      if (paymentMethod === 'paystack') {
+        // Initialize Paystack payment
+        initializePaystackPayment(planId, phoneNumber, confirmationMethod, confirmationContact);
+      } else if (paymentMethod === 'momo') {
+        const momoNumber = document.getElementById('momo_number').value;
+        if (!momoNumber) {
+          alert('Please enter your mobile money number');
+          return;
+        }
+        // Initialize mobile money payment
+        initializeMomoPayment(planId, phoneNumber, momoNumber, confirmationMethod, confirmationContact);
+      } else {
+        alert('Please select a payment method');
+      }
+    });
+
+    // Initialize Paystack payment
+    function initializePaystackPayment(planId, phoneNumber, confirmationMethod, confirmationContact) {
+      fetch('/api/payment/initialize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          plan_id: planId,
+          phone_number: phoneNumber,
+          confirmation_method: confirmationMethod,
+          confirmation_contact: confirmationContact,
+          payment_method: 'paystack'
+        })
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          // Redirect to Paystack payment page
+          window.location.href = response.payment_url;
+        } else {
+          alert('Payment initialization failed: ' + (response.error || 'Unknown error'));
+        }
+      })
+      .catch(err => {
+        console.error('Payment initialization error:', err);
+        alert('Payment initialization failed. Please try again.');
+      });
+    }
+
+    // Initialize mobile money payment
+    function initializeMomoPayment(planId, phoneNumber, momoNumber, confirmationMethod, confirmationContact) {
+      fetch('/api/payment/initialize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          plan_id: planId,
+          phone_number: momoNumber,
+          confirmation_method: confirmationMethod,
+          confirmation_contact: confirmationContact,
+          payment_method: 'momo'
+        })
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          momoTransactionId = response.reference;
+          document.getElementById('momo-status').style.display = 'block';
+          document.getElementById('momo-status').className = 'alert info';
+          document.getElementById('momo-status').innerHTML = response.message + '<br>Checking payment status...';
+          
+          // Start checking payment status
+          startMomoStatusCheck();
+        } else {
+          alert('Payment initialization failed: ' + (response.error || 'Unknown error'));
+        }
+      })
+      .catch(err => {
+        console.error('Payment initialization error:', err);
+        alert('Payment initialization failed. Please try again.');
+      });
+    }
+
+    // Start checking MoMo payment status
+    function startMomoStatusCheck() {
+      if (momoStatusCheckInterval) {
+        clearInterval(momoStatusCheckInterval);
+      }
+      
+      momoStatusCheckInterval = setInterval(checkMomoStatus, 5000); // Check every 5 seconds
+    }
+
+    // Check MoMo payment status
+    function checkMomoStatus() {
+      if (!momoTransactionId) return;
+      
+      fetch(`/api/payment/momo-status/${momoTransactionId}`)
+        .then(res => res.json())
+        .then(response => {
+          if (response.status === 'success') {
+            clearInterval(momoStatusCheckInterval);
+            document.getElementById('momo-status').className = 'alert success';
+            document.getElementById('momo-status').innerHTML = 'Payment successful! Redirecting to receipt...';
+            setTimeout(() => {
+              window.location.href = '/payment-success.html?reference=' + momoTransactionId;
+            }, 2000);
+          } else if (response.status === 'failed') {
+            clearInterval(momoStatusCheckInterval);
+            document.getElementById('momo-status').className = 'alert error';
+            document.getElementById('momo-status').innerHTML = 'Payment failed. Please try again.';
+          }
+          // If status is still pending, continue checking
+        })
+        .catch(err => {
+          console.error('Error checking payment status:', err);
+        });
+    }
+
+    // Logout function
+    function logout() {
+      fetch('/api/logout', {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          window.location.href = "index.html";
+        } else {
+          alert("Logout failed: " + (response.error || "Unknown error"));
+        }
+      })
+      .catch(err => {
+        console.error('Logout error:', err);
+        window.location.href = "index.html";
+      });
+    }
+
+    // Populate plan details
+    document.addEventListener('DOMContentLoaded', function() {
+      // In a real implementation, you would fetch plan details from the API
+      // For now, we'll just show placeholder values
+      const urlParams = new URLSearchParams(window.location.search);
+      const planName = urlParams.get('plan') || 'Unknown Plan';
+      const network = urlParams.get('network') || 'Unknown Network';
+      const price = urlParams.get('price') || '0.00';
+      const planId = urlParams.get('plan_id') || '';
+      const phone = urlParams.get('phone') || '';
+      
+      document.getElementById('selectedPlanName').textContent = planName;
+      document.getElementById('selectedPlanNetwork').textContent = network;
+      document.getElementById('selectedPlanPrice').textContent = 'GHC ' + price;
+      
+      // Store plan ID and phone in form data for submission
+      const form = document.getElementById('paymentForm');
+      const planIdInput = document.createElement('input');
+      planIdInput.type = 'hidden';
+      planIdInput.name = 'plan_id';
+      planIdInput.value = planId;
+      form.appendChild(planIdInput);
+      
+      const phoneInput = document.createElement('input');
+      phoneInput.type = 'hidden';
+      phoneInput.name = 'phone';
+      phoneInput.value = phone;
+      form.appendChild(phoneInput);
+    });
+  </script>
+</body>
+</html>

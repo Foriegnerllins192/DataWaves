@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard - DataWay</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .dashboard-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .profile-card, .transactions {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .profile-card h3, .transactions h3 {
+      margin-top: 0;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .profile-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .profile-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .profile-label {
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 5px;
+    }
+    .profile-value {
+      font-size: 18px;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #555;
+    }
+    .status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .status.pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    .status.failed {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .actions {
+      display: flex;
+      gap: 5px;
+    }
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+    .btn-primary:hover {
+      background-color: #0069d9;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+    .btn-success:hover {
+      background-color: #218838;
+    }
+    .btn-info {
+      background-color: #17a2b8;
+      color: white;
+    }
+    .btn-info:hover {
+      background-color: #138496;
+    }
+    .btn-warning {
+      background-color: #ffc107;
+      color: #212529;
+    }
+    .btn-warning:hover {
+      background-color: #e0a800;
+    }
+    .dashboard-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .no-transactions {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+    .alert {
+      padding: 12px;
+      border-radius: 4px;
+      margin: 15px 0;
+    }
+    .alert.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .alert.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"><a href="index.html">DataWay</a></div>
+    <ul class="nav-links">
+      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
+      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
+      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
+    </ul>
+    <div class="auth-links">
+      <a href="dashboard.html" class="btn-dashboard">Dashboard</a> | 
+      <a href="#" onclick="logout()" class="btn-logout">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Dashboard Content -->
+  <section class="container dashboard-section">
+    <h2>Welcome, <span id="userFullName">User</span>!</h2>
+
+    <!-- User Profile -->
+    <div class="profile-card">
+      <h3><i class="fas fa-user"></i> Your Profile</h3>
+      <div class="profile-info">
+        <div class="profile-item">
+          <span class="profile-label">Full Name</span>
+          <span class="profile-value" id="userFullNameDetail">-</span>
+        </div>
+        <div class="profile-item">
+          <span class="profile-label">Email Address</span>
+          <span class="profile-value" id="userEmail">-</span>
+        </div>
+        <div class="profile-item">
+          <span class="profile-label">Phone Number</span>
+          <span class="profile-value" id="userPhone">-</span>
+        </div>
+        <div class="profile-item">
+          <span class="profile-label">Account Type</span>
+          <span class="profile-value" id="userRole">-</span>
+        </div>
+        <div class="profile-item">
+          <span class="profile-label">Member Since</span>
+          <span class="profile-value" id="userCreatedAt">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="transactions">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3><i class="fas fa-history"></i> Transaction History</h3>
+        <button class="btn btn-success" onclick="refreshTransactions()"><i class="fas fa-sync-alt"></i> Refresh</button>
+      </div>
+      <div id="alert" class="alert" style="display: none;"></div>
+      <div id="transactionsContainer">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Network</th>
+              <th>Plan</th>
+              <th>Amount</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="transactionList">
+            <tr>
+              <td colspan="7" class="no-transactions">Loading transactions...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="dashboard-actions">
+      <button class="btn btn-primary" onclick="window.location.href='buy-plan.html'">
+        <i class="fas fa-shopping-cart"></i> Buy More Data
+      </button>
+      <button class="btn btn-secondary" onclick="window.location.href='receipt.html'">
+        <i class="fas fa-receipt"></i> View Last Receipt
+      </button>
+      <button class="btn btn-secondary" onclick="window.location.href='account.html'">
+        <i class="fas fa-user-cog"></i> Account Settings
+      </button>
+    </div>
+  </section>
+
+  <script>
+    // Logout function
+    function logout() {
+      fetch('/api/logout', {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          window.location.href = "index.html";
+        } else {
+          alert("Logout failed: " + (response.error || "Unknown error"));
+        }
+      })
+      .catch(err => {
+        console.error('Logout error:', err);
+        window.location.href = "index.html";
+      });
+    }
+
+    // Refresh transactions
+    function refreshTransactions() {
+      loadTransactions();
+    }
+
+    // View receipt
+    function viewReceipt(reference) {
+      window.location.href = 'receipt.html?reference=' + reference;
+    }
+
+    // Resend receipt
+    function resendReceipt(reference) {
+      // Show loading in the alert area
+      const alertDiv = document.getElementById('alert');
+      alertDiv.className = 'alert';
+      alertDiv.textContent = 'Resending receipt...';
+      alertDiv.style.display = 'block';
+      
+      fetch('/api/payment/resend-receipt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ reference: reference })
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          alertDiv.className = 'alert success';
+          alertDiv.textContent = response.message;
+        } else {
+          alertDiv.className = 'alert error';
+          alertDiv.textContent = response.error || 'Failed to resend receipt';
+        }
+        
+        // Hide alert after 5 seconds
+        setTimeout(() => {
+          alertDiv.style.display = 'none';
+        }, 5000);
+      })
+      .catch(err => {
+        console.error('Error resending receipt:', err);
+        alertDiv.className = 'alert error';
+        alertDiv.textContent = 'Failed to resend receipt';
+        
+        // Hide alert after 5 seconds
+        setTimeout(() => {
+          alertDiv.style.display = 'none';
+        }, 5000);
+      });
+    }
+
+    // Fetch user data
+    function loadUserData() {
+      fetch('/api/user')
+        .then(res => res.json())
+        .then(user => {
+          if (user.error) {
+            window.location.href = 'login.html';
+            return;
+          }
+          
+          document.getElementById("userFullName").textContent = user.full_name || "User";
+          document.getElementById("userFullNameDetail").textContent = user.full_name || "-";
+          document.getElementById("userEmail").textContent = user.email || "-";
+          document.getElementById("userPhone").textContent = user.phone || "-";
+          document.getElementById("userRole").textContent = user.role === 'admin' ? 'Administrator' : 'Regular User';
+          document.getElementById("userCreatedAt").textContent = user.created_at ? new Date(user.created_at).toLocaleDateString() : "-";
+        })
+        .catch(err => {
+          console.error('Error fetching user data:', err);
+          window.location.href = 'login.html';
+        });
+    }
+
+    // Fetch transactions
+    function loadTransactions() {
+      fetch('/api/transactions')
+        .then(res => res.json())
+        .then(transactions => {
+          const transactionList = document.getElementById("transactionList");
+          
+          if (transactions.error) {
+            transactionList.innerHTML = "<tr><td colspan='7' class='no-transactions'>Please log in to view transactions.</td></tr>";
+            return;
+          }
+          
+          if (transactions.length === 0) {
+            transactionList.innerHTML = "<tr><td colspan='7' class='no-transactions'>No transactions found.</td></tr>";
+          } else {
+            transactionList.innerHTML = "";
+            transactions.forEach(tx => {
+              const row = document.createElement("tr");
+              const date = new Date(tx.created_at).toLocaleDateString();
+              row.innerHTML = `
+                <td>${date}</td>
+                <td>${tx.network}</td>
+                <td>${tx.size || tx.plan}GB</td>
+                <td>GHC ${parseFloat(tx.amount).toFixed(2)}</td>
+                <td>${tx.phone_number}</td>
+                <td><span class="status ${tx.status}">${tx.status}</span></td>
+                <td class="actions">
+                  <button class="btn btn-info" style="padding: 5px 10px; font-size: 12px;" onclick="viewReceipt('${tx.payment_reference}')">
+                    <i class="fas fa-receipt"></i>
+                  </button>
+                  ${(tx.status === 'success' || tx.status === 'paid') ? 
+                    `<button class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;" onclick="resendReceipt('${tx.payment_reference}')" title="Resend Receipt">
+                      <i class="fas fa-redo"></i>
+                    </button>` : ''
+                  }
+                </td>
+              `;
+              transactionList.appendChild(row);
+            });
+          }
+        })
+        .catch(err => {
+          console.error('Error fetching transactions:', err);
+          const transactionList = document.getElementById("transactionList");
+          transactionList.innerHTML = "<tr><td colspan='7' class='no-transactions'>Error loading transactions.</td></tr>";
+        });
+    }
+
+    // Load data when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserData();
+      loadTransactions();
+    });
+  </script>
+</body>
+</html>

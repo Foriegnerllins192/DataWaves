@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data Plans - DataWay GH</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="admin-styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">DataWay - Admin</div>
+    <ul class="nav-links">
+      <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
+      <li><a href="plans.html"><i class="fas fa-sim-card"></i> Data Plans</a></li>
+      <li><a href="transactions.html"><i class="fas fa-money-bill-wave"></i> Transactions</a></li>
+    </ul>
+    <div class="auth-links">
+      <a href="#" onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </nav>
+
+  <!-- Data Plans Section -->
+  <section class="container">
+    <h2><i class="fas fa-sim-card"></i> Data Plan Management</h2>
+    
+    <div style="margin-bottom: 20px;">
+      <button class="btn btn-primary" onclick="openAddPlanModal()"><i class="fas fa-plus"></i> Add New Plan</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Provider</th>
+            <th>Size</th>
+            <th>Price (GHC)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="plansTable">
+          <tr>
+            <td colspan="5">Loading plans...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Add Plan Modal -->
+  <div id="addPlanModal" class="modal">
+    <div class="modal-content">
+      <span onclick="closeModal()" class="close">&times;</span>
+      <h3>Add New Data Plan</h3>
+      <form id="addPlanForm">
+        <label for="provider">Provider</label>
+        <select id="provider" name="provider" required>
+          <option value="">Select Provider</option>
+          <option value="mtn">MTN</option>
+          <option value="telecel">Telecel</option>
+          <option value="airteltigo">AirtelTigo</option>
+        </select>
+
+        <label for="size">Size (GB)</label>
+        <input type="number" id="size" name="size" step="0.1" min="0.1" required />
+
+        <label for="price">Price (GHC)</label>
+        <input type="number" id="price" name="price" step="0.01" min="0.01" required />
+
+        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Save Plan</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Logout function
+    function logout() {
+      fetch('/api/logout', {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          window.location.href = "../index.html";
+        } else {
+          alert("Logout failed: " + (response.error || "Unknown error"));
+        }
+      })
+      .catch(err => {
+        console.error('Logout error:', err);
+        window.location.href = "../index.html";
+      });
+    }
+
+    // Modal functions
+    function openAddPlanModal() {
+      document.getElementById('addPlanModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('addPlanModal').style.display = 'none';
+    }
+
+    // Load plans
+    function loadPlans() {
+      fetch('/api/admin/plans')
+        .then(res => res.json())
+        .then(plans => {
+          const plansTable = document.getElementById('plansTable');
+          if (plans.length === 0) {
+            plansTable.innerHTML = '<tr><td colspan="5">No plans found</td></tr>';
+          } else {
+            plansTable.innerHTML = '';
+            plans.forEach(plan => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${plan.id}</td>
+                <td>${plan.provider}</td>
+                <td>${plan.size}GB</td>
+                <td>${parseFloat(plan.price).toFixed(2)}</td>
+                <td>
+                  <button class="btn btn-edit" onclick="editPlan(${plan.id})"><i class="fas fa-edit"></i> Edit</button>
+                  <button class="btn btn-delete" onclick="deletePlan(${plan.id})"><i class="fas fa-trash"></i> Delete</button>
+                </td>
+              `;
+              plansTable.appendChild(row);
+            });
+          }
+        })
+        .catch(err => {
+          console.error('Error loading plans:', err);
+          document.getElementById('plansTable').innerHTML = '<tr><td colspan="5">Error loading plans</td></tr>';
+        });
+    }
+
+    // Add plan
+    document.getElementById('addPlanForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const planData = {
+        provider: formData.get('provider'),
+        size: formData.get('size'),
+        price: parseFloat(formData.get('price'))
+      };
+      
+      fetch('/api/admin/plans', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(planData)
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          alert('Plan added successfully');
+          closeModal();
+          loadPlans();
+          // Reset form
+          this.reset();
+        } else {
+          alert('Error: ' + (response.error || 'Failed to add plan'));
+        }
+      })
+      .catch(err => {
+        console.error('Error adding plan:', err);
+        alert('Error adding plan');
+      });
+    });
+
+    // Delete plan
+    function deletePlan(planId) {
+      if (confirm('Are you sure you want to delete this plan?')) {
+        fetch(`/api/admin/plans/${planId}`, {
+          method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(response => {
+          if (response.success) {
+            alert('Plan deleted successfully');
+            loadPlans();
+          } else {
+            alert('Error: ' + (response.error || 'Failed to delete plan'));
+          }
+        })
+        .catch(err => {
+          console.error('Error deleting plan:', err);
+          alert('Error deleting plan');
+        });
+      }
+    }
+
+    // Load plans when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadPlans();
+    });
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('addPlanModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>

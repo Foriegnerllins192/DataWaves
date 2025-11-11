@@ -1,0 +1,607 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f7fa;
+  line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px 30px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.logo a{
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li img {
+  height: 30px;
+  transition: transform 0.3s ease;
+}
+
+.nav-links li img:hover {
+  transform: scale(1.1);
+}
+.navbar .auth-links {
+  margin-top: 10px;
+}
+.navbar .auth-links a {
+  display: inline-block;
+  margin: 0 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.navbar .btn-login {
+  background-color: #007bff; /* Blue */
+}
+.navbar .btn-register {
+  background-color: #28a745; /* Green */
+}
+.navbar .btn-login:hover {
+  background-color: #0056b3;
+}
+.navbar .btn-register:hover {
+  background-color: #1e7e34;
+}
+
+.navbar .btn-dashboard {
+  background-color: rgb(238, 0, 0); /* Blue */
+}
+.navbar .btn-logout {
+   background-color: yellow;
+
+}
+
+.navbar .btn-login:hover {
+  background-color: #0056b3;
+}
+.navbar .btn-register:hover {
+  background-color: #1e7e34;
+}
+
+/* Centered-header */
+.centered-header {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  position: relative;
+}
+
+.centered-header .auth-links {
+  margin-top: 20px;
+}
+
+.centered-header .auth-links a {
+  display: inline-block;
+  margin: 0 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.centered-header .btn-login {
+  background-color: #007bff; /* Blue */
+}
+
+.centered-header .btn-register {
+  background-color: #28a745; /* Green */
+}
+
+.centered-header .btn-login:hover {
+  background-color: #0056b3;
+}
+
+.centered-header .btn-register:hover {
+  background-color: #1e7e34;
+}
+@media (max-width: 500px) {
+  .centered-header .auth-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}
+/* Slideshow */
+.slideshow-container {
+  max-width: 100%;
+  position: relative;
+  margin: auto;
+}
+
+.mySlides {
+  display: none;
+}
+
+.mySlides img {
+  vertical-align: middle;
+  width: 100%;
+}
+
+/* Container for plans */
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.plans-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.plan {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.plan h4 {
+  margin-top: 0;
+  color: #007bff;
+}
+/* Marquee Section */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  padding: 10px 0;
+  position: relative;
+}
+
+.marquee-content {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 20s linear infinite;
+  font-size: 0; /* Remove space between inline elements */
+}
+
+.marquee-content img {
+  height: 80px;
+  margin: 0 30px;
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+.marquee-content img:hover {
+  transform: scale(1.1);
+}
+
+/* Animation */
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.buy-btn {
+  display: inline-block;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.buy-btn:hover {
+  background-color: #218838;
+}
+
+.full-width {
+  width: 100%;
+}
+/* Auth Forms */
+.container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+form input {
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+form button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+form p {
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* Plan Selection */
+#buyPlanForm {
+  display: flex;
+  flex-direction: column;
+}
+
+#buyPlanForm label {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+#buyPlanForm select,
+#buyPlanForm input[type="tel"] {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+#buyPlanForm button {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#buyPlanForm button:hover {
+  background-color: #0056b3;
+}
+
+.selected-plan {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.alert {
+  padding: 15px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+  display: none;
+  margin-top: 20px;
+}
+/* Back Button */
+.back-button {
+  margin: 20px 30px;
+  font-size: 16px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.back-button i {
+  margin-right: 8px;
+}
+/* Dashboard Styles */
+.dashboard-section {
+  max-width: 800px;
+  margin: 30px auto;
+}
+
+.dashboard-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.profile-card,
+.transactions {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.profile-card h3,
+.transactions h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.dashboard-actions button {
+  flex: 1;
+  min-width: 200px;
+  padding: 15px;
+  font-size: 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dashboard-actions button:hover {
+  background-color: #0056b3;
+}
+
+.dashboard-actions i {
+  margin-right: 8px;
+}
+.account-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.account-actions .login {
+  flex: 1;
+  min-width: 200px;
+  padding: 15px;
+  font-size: 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.account-actions .register {
+  flex: 1;
+  min-width: 200px;
+  padding: 15px;
+  font-size: 16px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.account-actions .login :hover {
+  background-color: #0056b3;
+}
+
+.account-actions .register :hover {
+  background-color: #155724;
+}
+
+/* Admin Page Common Styles */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f1f1f1;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+.btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-edit {
+  background-color: #ffc107;
+  color: #212529;
+  margin-right: 10px;
+}
+
+.btn-edit:hover {
+  background-color: #e0a800;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #c82333;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  position: relative;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+}
+
+.close:hover {
+  color: #333;
+}
+/* Transaction Styles */
+.transactions {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+#transactionTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#transactionTable th,
+#transactionTable td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+#transactionTable th {
+  background-color: #f8f9fa;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Status Tags */
+.status {
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+}
+
+.status.success {
+  background-color: #28a745;
+}
+
+.status.pending {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status.failed {
+  background-color: #dc3545;
+}
+
+/* Back Button */
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.back-button i {
+  margin-right: 8px;
+}

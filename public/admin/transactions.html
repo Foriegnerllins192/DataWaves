@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transactions - DataWay GH</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="admin-styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .admin-card {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .admin-card h2, .admin-card h3 {
+      margin-top: 0;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 200px;
+    }
+    .filter-group label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    .filter-group select, .filter-group input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #555;
+      position: sticky;
+      top: 0;
+    }
+    .status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .status.pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    .status.failed {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .status.paid {
+      background-color: #cce7ff;
+      color: #004085;
+    }
+    .actions {
+      display: flex;
+      gap: 5px;
+    }
+    .btn {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+    .btn-warning {
+      background-color: #ffc107;
+      color: #212529;
+    }
+    .btn-info {
+      background-color: #17a2b8;
+      color: white;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 5px;
+    }
+    .pagination button {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+    }
+    .pagination button.active {
+      background: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">DataWay - Admin</div>
+    <ul class="nav-links">
+      <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
+      <li><a href="plans.html"><i class="fas fa-sim-card"></i> Data Plans</a></li>
+      <li><a href="transactions.html"><i class="fas fa-money-bill-wave"></i> Transactions</a></li>
+    </ul>
+    <div class="auth-links">
+      <a href="#" onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </nav>
+
+  <!-- Transactions Section -->
+  <section class="container">
+    <h2><i class="fas fa-money-bill-wave"></i> Transaction Management</h2>
+
+    <!-- Filters -->
+    <div class="admin-card">
+      <h3><i class="fas fa-filter"></i> Filter Transactions</h3>
+      <div class="filters">
+        <div class="filter-group">
+          <label for="networkFilter">Network:</label>
+          <select id="networkFilter" onchange="filterTransactions()">
+            <option value="">All Networks</option>
+            <option value="mtn">MTN</option>
+            <option value="telecel">Telecel</option>
+            <option value="airteltigo">AirtelTigo</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="statusFilter">Status:</label>
+          <select id="statusFilter" onchange="filterTransactions()">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
+            <option value="success">Success</option>
+            <option value="failed">Failed</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="dateFilter">Date:</label>
+          <input type="date" id="dateFilter" onchange="filterTransactions()">
+        </div>
+        <div class="filter-group">
+          <label for="searchFilter">Search:</label>
+          <input type="text" id="searchFilter" placeholder="User name or email" onkeyup="filterTransactions()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Transactions Table -->
+    <div class="admin-card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3><i class="fas fa-list"></i> All Transactions</h3>
+        <button class="btn btn-primary" onclick="refreshTransactions()"><i class="fas fa-sync-alt"></i> Refresh</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Plan</th>
+              <th>Network</th>
+              <th>Amount (GHC)</th>
+              <th>Phone Number</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsTable">
+            <tr>
+              <td colspan="9">Loading transactions...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination">
+        <!-- Pagination will be added here -->
+      </div>
+    </div>
+  </section>
+
+  <script>
+    let allTransactions = [];
+    let filteredTransactions = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    // Logout function
+    function logout() {
+      fetch('/api/logout', {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          window.location.href = "../index.html";
+        } else {
+          alert("Logout failed: " + (response.error || "Unknown error"));
+        }
+      })
+      .catch(err => {
+        console.error('Logout error:', err);
+        window.location.href = "../index.html";
+      });
+    }
+
+    // Refresh transactions
+    function refreshTransactions() {
+      loadTransactions();
+    }
+
+    // Filter transactions
+    function filterTransactions() {
+      const networkFilter = document.getElementById('networkFilter').value;
+      const statusFilter = document.getElementById('statusFilter').value;
+      const dateFilter = document.getElementById('dateFilter').value;
+      const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+
+      filteredTransactions = allTransactions.filter(tx => {
+        const matchesNetwork = !networkFilter || tx.network === networkFilter;
+        const matchesStatus = !statusFilter || tx.status === statusFilter;
+        const matchesDate = !dateFilter || new Date(tx.created_at).toISOString().split('T')[0] === dateFilter;
+        const matchesSearch = !searchFilter || 
+          tx.full_name.toLowerCase().includes(searchFilter) || 
+          tx.email.toLowerCase().includes(searchFilter);
+
+        return matchesNetwork && matchesStatus && matchesDate && matchesSearch;
+      });
+
+      currentPage = 1;
+      displayTransactions();
+    }
+
+    // View transaction details
+    function viewTransaction(transactionId) {
+      // In a real implementation, you would show transaction details in a modal
+      const transaction = allTransactions.find(tx => tx.id == transactionId);
+      if (transaction) {
+        alert(`Transaction Details:
+ID: ${transaction.id}
+User: ${transaction.full_name}
+Plan: ${transaction.size}GB
+Network: ${transaction.network}
+Amount: GHC ${parseFloat(transaction.amount).toFixed(2)}
+Status: ${transaction.status}
+Date: ${new Date(transaction.created_at).toLocaleString()}`);
+      }
+    }
+
+    // Resend failed transaction
+    function resendTransaction(transactionId) {
+      if (confirm('Are you sure you want to resend this transaction?')) {
+        // In a real implementation, you would call an API endpoint to resend the transaction
+        alert('Transaction resend functionality would be implemented here');
+      }
+    }
+
+    // Display transactions with pagination
+    function displayTransactions() {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageTransactions = filteredTransactions.slice(startIndex, endIndex);
+
+      const transactionsTable = document.getElementById('transactionsTable');
+      if (pageTransactions.length === 0) {
+        transactionsTable.innerHTML = '<tr><td colspan="9">No transactions found</td></tr>';
+      } else {
+        transactionsTable.innerHTML = '';
+        pageTransactions.forEach(tx => {
+          const row = document.createElement('tr');
+          const date = new Date(tx.created_at).toLocaleString();
+          row.innerHTML = `
+            <td>${tx.id}</td>
+            <td>${tx.full_name} (${tx.email})</td>
+            <td>${tx.size}GB</td>
+            <td>${tx.network}</td>
+            <td>${parseFloat(tx.amount).toFixed(2)}</td>
+            <td>${tx.phone_number}</td>
+            <td>${date}</td>
+            <td><span class="status ${tx.status}">${tx.status}</span></td>
+            <td class="actions">
+              <button class="btn btn-info" onclick="viewTransaction(${tx.id})" title="View Details"><i class="fas fa-eye"></i></button>
+              ${tx.status === 'failed' ? `<button class="btn btn-warning" onclick="resendTransaction(${tx.id})" title="Resend"><i class="fas fa-redo"></i></button>` : ''}
+            </td>
+          `;
+          transactionsTable.appendChild(row);
+        });
+      }
+
+      // Update pagination
+      updatePagination();
+    }
+
+    // Update pagination controls
+    function updatePagination() {
+      const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+      const pagination = document.getElementById('pagination');
+      
+      if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+      }
+
+      let paginationHTML = '';
+      for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `<button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+      }
+      
+      pagination.innerHTML = paginationHTML;
+    }
+
+    // Go to specific page
+    function goToPage(page) {
+      currentPage = page;
+      displayTransactions();
+    }
+
+    // Load transactions
+    function loadTransactions() {
+      fetch('/api/admin/transactions')
+        .then(res => res.json())
+        .then(transactions => {
+          allTransactions = transactions;
+          filteredTransactions = [...transactions];
+          displayTransactions();
+        })
+        .catch(err => {
+          console.error('Error loading transactions:', err);
+          document.getElementById('transactionsTable').innerHTML = '<tr><td colspan="9">Error loading transactions</td></tr>';
+        });
+    }
+
+    // Load transactions when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadTransactions();
+    });
+  </script>
+</body>
+</html>

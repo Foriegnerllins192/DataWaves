@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buy Data Plan - DataWay</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .selected-plan {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .selected-plan h3 {
+      margin-top: 0;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    .form-group select, .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      width: 100%;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+    .btn-primary:hover {
+      background-color: #0069d9;
+    }
+    .alert {
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .alert.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .alert.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: #007bff;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"><a href="index.html">DataWay</a></div>
+    <ul class="nav-links">
+      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
+      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
+      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
+    </ul>
+    <div class="auth-links">
+      <!-- User info will be displayed here after login -->
+      <div id="user-info" style="display: none;">
+        <a href="account.html" class="btn-dashboard" id="user-button" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;"></a>
+        | <a href="#" onclick="logout()" class="btn-logout">Logout</a>
+      </div>
+      <!-- Default auth links for logged out users -->
+      <div id="auth-links-default">
+        <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
+       |<a href="account.html" class="btn-dashboard">Account</a> 
+      </div>
+    </div>
+  </nav>
+
+  <!-- Buy Plan Form -->
+  <section class="container">
+    <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    <h2>Buy Data Plan</h2>
+    
+    <div class="selected-plan">
+      <h3><i class="fas fa-shopping-cart"></i> Selected Plan</h3>
+      <p><strong>Network:</strong> <span id="selectedPlanNetwork">None</span></p>
+      <p><strong>Plan:</strong> <span id="selectedPlanName">None</span></p>
+      <p><strong>Price:</strong> <span id="selectedPlanPrice">GHC 0.00</span></p>
+    </div>
+
+    <form id="buyPlanForm">
+      <div class="form-group">
+        <label for="network"><i class="fas fa-network-wired"></i> Select Network:</label>
+        <select id="network" name="network" required>
+          <option value="">-- Select Network --</option>
+          <option value="mtn">MTN</option>
+          <option value="telecel">Telecel</option>
+          <option value="airteltigo">AirtelTigo</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="plan"><i class="fas fa-sim-card"></i> Select Data Plan:</label>
+        <select id="plan" name="plan" required>
+          <option value="">-- Select a network first --</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="phone_number"><i class="fas fa-phone"></i> Phone Number:</label>
+        <input type="tel" id="phone_number" name="phone_number" placeholder="Enter phone number (e.g., 024XXXXXXX)" required />
+        <small>Enter the phone number to receive the data bundle</small>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-arrow-right"></i> Continue to Payment
+      </button>
+    </form>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Processing your request...</p>
+    </div>
+
+    <div id="alert" class="alert" style="display: none;"></div>
+  </section>
+
+  <script>
+    // Handle network selection
+    document.getElementById('network').addEventListener('change', function() {
+      const network = this.value;
+      const planSelect = document.getElementById('plan');
+      const networkDisplay = document.getElementById('selectedPlanNetwork');
+      
+      // Update selected network display
+      networkDisplay.textContent = network ? network.toUpperCase() : 'None';
+      
+      // Clear existing options
+      planSelect.innerHTML = '<option value="">Loading plans...</option>';
+      
+      if (network) {
+        // Fetch plans for selected network
+        fetch(`/api/plans?provider=${network}`)
+          .then(res => res.json())
+          .then(plans => {
+            if (plans.length > 0) {
+              planSelect.innerHTML = '<option value="">-- Select a plan --</option>';
+              plans.forEach(plan => {
+                const option = document.createElement('option');
+                option.value = plan.id;
+                option.textContent = `${plan.size}GB - GHC ${plan.customer_price || plan.price}`;
+                option.dataset.price = plan.customer_price || plan.price;
+                option.dataset.size = plan.size;
+                option.dataset.provider = plan.provider;
+                planSelect.appendChild(option);
+              });
+            } else {
+              planSelect.innerHTML = '<option value="">No plans available</option>';
+            }
+          })
+          .catch(err => {
+            console.error('Error fetching plans:', err);
+            planSelect.innerHTML = '<option value="">Error loading plans</option>';
+            showAlert('Error loading plans. Please try again.', 'error');
+          });
+      } else {
+        planSelect.innerHTML = '<option value="">-- Select a network first --</option>';
+        updateSelectedPlanDisplay();
+      }
+    });
+
+    // Handle plan selection
+    document.getElementById('plan').addEventListener('change', function() {
+      updateSelectedPlanDisplay();
+    });
+
+    // Update selected plan display
+    function updateSelectedPlanDisplay() {
+      const planSelect = document.getElementById('plan');
+      const selectedOption = planSelect.selectedOptions[0];
+      const planNameDisplay = document.getElementById('selectedPlanName');
+      const planPriceDisplay = document.getElementById('selectedPlanPrice');
+      
+      if (selectedOption && selectedOption.value) {
+        planNameDisplay.textContent = selectedOption.dataset.size + 'GB';
+        planPriceDisplay.textContent = 'GHC ' + selectedOption.dataset.price;
+      } else {
+        planNameDisplay.textContent = 'None';
+        planPriceDisplay.textContent = 'GHC 0.00';
+      }
+    }
+
+    // Show alert message
+    function showAlert(message, type) {
+      const alertDiv = document.getElementById('alert');
+      alertDiv.textContent = message;
+      alertDiv.className = 'alert ' + type;
+      alertDiv.style.display = 'block';
+      
+      // Auto-hide success messages after 5 seconds
+      if (type === 'success') {
+        setTimeout(() => {
+          alertDiv.style.display = 'none';
+        }, 5000);
+      }
+    }
+
+    // Handle form submission
+    document.getElementById('buyPlanForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const network = document.getElementById('network').value;
+      const planId = document.getElementById('plan').value;
+      const phoneNumber = document.getElementById('phone_number').value;
+      const planSelect = document.getElementById('plan');
+      const selectedOption = planSelect.selectedOptions[0];
+      
+      // Validate form
+      if (!network || !planId || !phoneNumber) {
+        showAlert('Please fill in all fields', 'error');
+        return;
+      }
+      
+      // Validate phone number
+      const phoneRegex = /^(\+233|0)(20|24|27|26|23|50|54|55|57|59)\d{7}$/;
+      if (!phoneRegex.test(phoneNumber.replace(/\s/g, ''))) {
+        showAlert('Please enter a valid Ghana phone number (e.g., 024XXXXXXX or +23324XXXXXXX)', 'error');
+        return;
+      }
+      
+      // Show loading indicator
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('buyPlanForm').style.display = 'none';
+      
+      // Get plan details
+      const planName = selectedOption.dataset.size + 'GB';
+      const price = selectedOption.dataset.price;
+      const provider = selectedOption.dataset.provider;
+      
+      // Redirect to payment page with parameters
+      window.location.href = `payment.html?network=${provider}&plan=${planName}&plan_id=${planId}&phone=${encodeURIComponent(phoneNumber)}&price=${price}`;
+    });
+
+    // Logout function
+    function logout() {
+      fetch('/api/logout', {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          window.location.href = "index.html";
+        } else {
+          showAlert("Logout failed: " + (response.error || "Unknown error"), 'error');
+        }
+      })
+      .catch(err => {
+        console.error('Logout error:', err);
+        showAlert('Logout failed. Please try again.', 'error');
+      });
+    }
+
+    // Check authentication status
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('/api/user')
+        .then(res => res.json())
+        .then(user => {
+          if (user.error) {
+            // Not logged in, redirect to login
+            window.location.href = 'login.html';
+            return;
+          }
+          
+          // Show user info
+          if (document.getElementById('user-info')) {
+            document.getElementById('user-info').style.display = 'block';
+          }
+          if (document.getElementById('auth-links-default')) {
+            document.getElementById('auth-links-default').style.display = 'none';
+          }
+          if (document.getElementById('user-button')) {
+            document.getElementById('user-button').textContent = user.full_name || 'User';
+          }
+        })
+        .catch(err => {
+          console.error('Error checking auth status:', err);
+        });
+    });
+  </script>
+</body>
+</html>

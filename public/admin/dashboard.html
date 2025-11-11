@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - DataWay GH</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="admin-styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .admin-card {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .admin-card h3 {
+      margin-top: 0;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      border-bottom: none;
+    }
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .charts-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .chart-card {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .chart-card h3 {
+      margin-top: 0;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .chart-placeholder {
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+      border-radius: 4px;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #555;
+    }
+    .status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .status.pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    .status.failed {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+    .btn-warning {
+      background-color: #ffc107;
+      color: #212529;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">DataWay - Admin</div>
+    <ul class="nav-links">
+      <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
+      <li><a href="plans.html"><i class="fas fa-sim-card"></i> Data Plans</a></li>
+      <li><a href="transactions.html"><i class="fas fa-money-bill-wave"></i> Transactions</a></li>
+    </ul>
+    <div class="auth-links">
+      <a href="#" onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </nav>
+
+  <!-- Admin Dashboard Content -->
+  <section class="admin-container">
+    <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+
+    <!-- Quick Stats -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3><i class="fas fa-users"></i> Total Users</h3>
+        <div class="value" id="userCount">0</div>
+      </div>
+
+      <div class="stat-card">
+        <h3><i class="fas fa-sim-card"></i> Total Plans</h3>
+        <div class="value" id="planCount">0</div>
+      </div>
+
+      <div class="stat-card">
+        <h3><i class="fas fa-money-bill-wave"></i> Today's Sales</h3>
+        <div class="value" id="salesToday">GHC 0.00</div>
+      </div>
+
+      <div class="stat-card">
+        <h3><i class="fas fa-wallet"></i> Aggregator Balance</h3>
+        <div class="value" id="aggregatorBalance">GHC 0.00</div>
+      </div>
+    </div>
+
+    <!-- Charts and Analytics -->
+    <div class="charts-container">
+      <div class="chart-card">
+        <h3><i class="fas fa-chart-line"></i> Sales Overview</h3>
+        <div class="chart-placeholder" id="salesChart">
+          <p>Sales chart would appear here in a production environment</p>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3><i class="fas fa-network-wired"></i> Network Distribution</h3>
+        <div class="chart-placeholder" id="networkChart">
+          <p>Network distribution chart would appear here in a production environment</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="admin-card transactions">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3><i class="fas fa-history"></i> Recent Transactions</h3>
+        <button class="btn btn-primary" onclick="refreshTransactions()"><i class="fas fa-sync-alt"></i> Refresh</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Plan</th>
+              <th>Network</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="recentTransactions">
+            <tr>
+              <td colspan="7">Loading transactions...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Failed Transactions -->
+    <div class="admin-card transactions">
+      <h3><i class="fas fa-exclamation-triangle"></i> Failed Transactions</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Plan</th>
+              <th>Network</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Error</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="failedTransactions">
+            <tr>
+              <td colspan="7">Loading failed transactions...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Logout function
+    function logout() {
+      fetch('/api/logout', {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          window.location.href = "../index.html";
+        } else {
+          alert("Logout failed: " + (response.error || "Unknown error"));
+        }
+      })
+      .catch(err => {
+        console.error('Logout error:', err);
+        window.location.href = "../index.html";
+      });
+    }
+
+    // Refresh transactions
+    function refreshTransactions() {
+      loadDashboardData();
+    }
+
+    // Resend failed transaction
+    function resendTransaction(transactionId) {
+      if (confirm('Are you sure you want to resend this transaction?')) {
+        // In a real implementation, you would call an API endpoint to resend the transaction
+        alert('Transaction resend functionality would be implemented here');
+      }
+    }
+
+    // View transaction details
+    function viewTransaction(transactionId) {
+      // In a real implementation, you would show transaction details
+      alert('Transaction details view would be implemented here');
+    }
+
+    // Load dashboard data
+    function loadDashboardData() {
+      // Fetch dashboard data
+      Promise.all([
+        fetch('/api/admin/dashboard').then(res => res.json()),
+        fetch('/api/admin/transactions').then(res => res.json())
+      ])
+      .then(([dashboardData, allTransactions]) => {
+        // Update stats
+        document.getElementById('userCount').textContent = dashboardData.userCount;
+        document.getElementById('planCount').textContent = dashboardData.planCount;
+        document.getElementById('salesToday').textContent = dashboardData.salesToday;
+
+        // For demo purposes, show a placeholder for aggregator balance
+        document.getElementById('aggregatorBalance').textContent = 'GHC 1,250.00';
+
+        // Filter transactions
+        const recentTransactions = allTransactions.slice(0, 10);
+        const failedTransactions = allTransactions.filter(tx => tx.status === 'failed').slice(0, 5);
+
+        // Update recent transactions
+        const transactionList = document.getElementById('recentTransactions');
+        if (recentTransactions.length === 0) {
+          transactionList.innerHTML = '<tr><td colspan="7">No recent transactions</td></tr>';
+        } else {
+          transactionList.innerHTML = '';
+          recentTransactions.forEach(tx => {
+            const row = document.createElement('tr');
+            const date = new Date(tx.created_at).toLocaleDateString();
+            row.innerHTML = `
+              <td>${tx.full_name}</td>
+              <td>${tx.size}GB</td>
+              <td>${tx.network}</td>
+              <td>GHC ${parseFloat(tx.amount).toFixed(2)}</td>
+              <td>${date}</td>
+              <td><span class="status ${tx.status}">${tx.status}</span></td>
+              <td class="actions">
+                <button class="btn btn-primary" onclick="viewTransaction(${tx.id})"><i class="fas fa-eye"></i></button>
+              </td>
+            `;
+            transactionList.appendChild(row);
+          });
+        }
+
+        // Update failed transactions
+        const failedTransactionList = document.getElementById('failedTransactions');
+        if (failedTransactions.length === 0) {
+          failedTransactionList.innerHTML = '<tr><td colspan="7">No failed transactions</td></tr>';
+        } else {
+          failedTransactionList.innerHTML = '';
+          failedTransactions.forEach(tx => {
+            const row = document.createElement('tr');
+            const date = new Date(tx.created_at).toLocaleDateString();
+            row.innerHTML = `
+              <td>${tx.full_name}</td>
+              <td>${tx.size}GB</td>
+              <td>${tx.network}</td>
+              <td>GHC ${parseFloat(tx.amount).toFixed(2)}</td>
+              <td>${date}</td>
+              <td>${tx.aggregator_response?.error || 'Unknown error'}</td>
+              <td class="actions">
+                <button class="btn btn-warning" onclick="resendTransaction(${tx.id})"><i class="fas fa-redo"></i> Resend</button>
+                <button class="btn btn-primary" onclick="viewTransaction(${tx.id})"><i class="fas fa-eye"></i></button>
+              </td>
+            `;
+            failedTransactionList.appendChild(row);
+          });
+        }
+      })
+      .catch(err => {
+        console.error('Error loading dashboard data:', err);
+        document.getElementById('userCount').textContent = 'Error';
+        document.getElementById('planCount').textContent = 'Error';
+        document.getElementById('salesToday').textContent = 'Error';
+        document.getElementById('aggregatorBalance').textContent = 'Error';
+        document.getElementById('recentTransactions').innerHTML = '<tr><td colspan="7">Error loading transactions</td></tr>';
+        document.getElementById('failedTransactions').innerHTML = '<tr><td colspan="7">Error loading failed transactions</td></tr>';
+      });
+    }
+
+    // Load data when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadDashboardData();
+    });
+  </script>
+</body>
+</html>

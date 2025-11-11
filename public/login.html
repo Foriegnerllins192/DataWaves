@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - DataWay</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"><a href="index.html">DataWay</a></div>
+    <ul class="nav-links">
+      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
+      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
+      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
+    </ul>
+    <div class="auth-links">
+      <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
+    </div>
+  </nav>
+
+  <!-- Login Form -->
+  <section class="container auth-container">
+    <div class="auth-form">
+      <h2><i class="fas fa-sign-in-alt"></i> Login to Your Account</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="password"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+        
+        <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+      </form>
+      
+      <div class="auth-footer">
+        <p>Don't have an account? <a href="register.html">Register here</a></p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginForm = document.getElementById('loginForm');
+
+      if (loginForm) {
+        loginForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const formData = new FormData(loginForm);
+          const data = Object.fromEntries(formData);
+
+          fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          })
+          .then(res => res.json())
+          .then(response => {
+            if (response.success) {
+              // Redirect based on user role
+              if (response.user.role === 'admin') {
+                window.location.href = "/admin/dashboard.html";
+              } else {
+                window.location.href = "/dashboard.html";
+              }
+            } else {
+              alert(response.error || "Login failed!");
+            }
+          })
+          .catch(err => {
+            console.error('Error:', err);
+            alert("Login failed! Please try again.");
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

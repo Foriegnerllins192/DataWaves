@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Failed - DataWay</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"><a href="index.html">DataWay</a></div>
+    <ul class="nav-links">
+      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
+      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
+      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
+    </ul>
+    <div class="auth-links">
+      <!-- User info will be displayed here after login -->
+      <div id="user-info" style="display: none;">
+        <a href="account.html" class="btn-dashboard" id="user-button" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;"></a>
+        | <a href="#" onclick="logout()" class="btn-logout">Logout</a>
+      </div>
+      <!-- Default auth links for logged out users -->
+      <div id="auth-links-default">
+        <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
+       |<a href="account.html" class="btn-dashboard">Account</a> 
+      </div>
+    </div>
+  </nav>
+
+  <!-- Payment Failed Content -->
+  <section class="container">
+    <div style="text-align: center; padding: 50px 20px;">
+      <i class="fas fa-times-circle" style="font-size: 80px; color: #dc3545; margin-bottom: 20px;"></i>
+      <h2>Payment Failed!</h2>
+      <p>Unfortunately, your payment could not be processed.</p>
+      <p>Please try again or contact support if the problem persists.</p>
+      <div class="selected-plan" style="margin: 30px auto; max-width: 400px;">
+        <h3>Transaction Details</h3>
+        <p><strong>Reference:</strong> <span id="reference">-</span></p>
+        <p><strong>Status:</strong> <span class="status failed">Failed</span></p>
+      </div>
+      <div style="margin-top: 30px;">
+        <button class="btn btn-primary" onclick="window.location.href='buy-plan.html'">Try Again</button>
+        <button class="btn btn-secondary" onclick="window.location.href='dashboard.html'" style="margin-left: 10px;">View Dashboard</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Logout function
+    function logout() {
+      fetch('/api/logout', {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          window.location.href = "index.html";
+        } else {
+          alert("Logout failed: " + (response.error || "Unknown error"));
+        }
+      })
+      .catch(err => {
+        console.error('Logout error:', err);
+        window.location.href = "index.html";
+      });
+    }
+
+    // Get reference from URL
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const reference = urlParams.get('reference');
+      
+      if (reference) {
+        document.getElementById('reference').textContent = reference;
+      }
+    });
+  </script>
+</body>
+</html>

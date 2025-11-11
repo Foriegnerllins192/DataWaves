@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AirtelTigo Data Plans - DataWay</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"><a href="index.html">DataWay</a></div>
+    <ul class="nav-links">
+      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
+      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
+      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
+    </ul>
+    <div class="auth-links">
+      <!-- User info will be displayed here after login -->
+      <div id="user-info" style="display: none;">
+        <a href="account.html" class="btn-dashboard" id="user-button" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;"></a>
+        | <a href="#" onclick="logout()" class="btn-logout">Logout</a>
+      </div>
+      <!-- Default auth links for logged out users -->
+      <div id="auth-links-default">
+        <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
+       |<a href="account.html" class="btn-dashboard">Account</a> 
+      </div>
+    </div>
+  </nav>
+
+  <!-- Centered Header -->
+  <header class="centered-header">
+    <h1>AirtelTigo Data Plans</h1>
+    <p>Fast, easy, and affordable AirtelTigo mobile data bundles.</p>
+  </header>
+
+  <!-- AirtelTigo Plans Section -->
+  <section class="container">
+    <h2 style="color: #0099cc;"><img src="images/airteltigo.png" alt="AirtelTigo" style="width: 80px;"> AirtelTigo Data Plans</h2>
+    
+    <div class="plans-list">
+      <div class="plan"><h4>1GB</h4><p><strong>Price:</strong> GHC 4</p></div>
+      <div class="plan"><h4>3GB</h4><p><strong>Price:</strong> GHC 13</p></div>
+      <div class="plan"><h4>5GB</h4><p><strong>Price:</strong> GHC 20</p></div>
+      <div class="plan"><h4>10GB</h4><p><strong>Price:</strong> GHC 32</p></div>
+      <div class="plan"><h4>15GB</h4><p><strong>Price:</strong> GHC 48</p></div>
+      <div class="plan"><h4>20GB</h4><p><strong>Price:</strong> GHC 68</p></div>
+      <div class="plan"><h4>25GB</h4><p><strong>Price:</strong> GHC 88</p></div>
+      <div class="plan"><h4>30GB</h4><p><strong>Price:</strong> GHC 100</p></div>
+      <div class="plan"><h4>40GB</h4><p><strong>Price:</strong> GHC 140</p></div>
+      <div class="plan"><h4>50GB</h4><p><strong>Price:</strong> GHC 160</p></div>
+      <div class="plan"><h4>100GB</h4><p><strong>Price:</strong> GHC 200</p></div>
+      <div class="plan"><h4>130GB</h4><p><strong>Price:</strong> GHC 225</p></div>
+      <div class="plan"><h4>150GB</h4><p><strong>Price:</strong> GHC 250</p></div>
+      <div class="plan"><h4>200GB</h4><p><strong>Price:</strong> GHC 300</p></div>
+    </div>
+    
+    <a href="buy-plan.html?network=airteltigo" class="buy-btn full-width">Buy AirtelTigo DATA</a>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

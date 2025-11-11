@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MTN Data Plans - DataWay</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"><a href="index.html">DataWay</a></div>
+    <ul class="nav-links">
+      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
+      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
+      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
+    </ul>
+    <div class="auth-links">
+      <!-- User info will be displayed here after login -->
+      <div id="user-info" style="display: none;">
+        <a href="account.html" class="btn-dashboard" id="user-button" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;"></a>
+        | <a href="#" onclick="logout()" class="btn-logout">Logout</a>
+      </div>
+      <!-- Default auth links for logged out users -->
+      <div id="auth-links-default">
+        <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Centered Header -->
+  <header class="centered-header">
+    <h1>MTN Data Plans</h1>
+    <p>Fast, easy, and affordable MTN mobile data bundles.</p>
+  </header>
+
+  <!-- MTN Plans Section -->
+  <section class="container">
+    <h2 style="color: #f7931e;"><img src="images/mtn.png" alt="MTN" style="width: 80px;"> MTN Data Plans</h2>
+    
+    <div class="plans-list">
+      <div class="plan"><h4>1GB</h4><p><strong>Price:</strong> GHC 5.50</p></div>
+      <div class="plan"><h4>3GB</h4><p><strong>Price:</strong> GHC 8.50</p></div>
+      <div class="plan"><h4>5GB</h4><p><strong>Price:</strong> GHC 15</p></div>
+      <div class="plan"><h4>10GB</h4><p><strong>Price:</strong> GHC 25</p></div>
+      <div class="plan"><h4>15GB</h4><p><strong>Price:</strong> GHC 35</p></div>
+      <div class="plan"><h4>25GB</h4><p><strong>Price:</strong> GHC 60</p></div>
+      <div class="plan"><h4>45GB</h4><p><strong>Price:</strong> GHC 100</p></div>
+      <div class="plan"><h4>55GB</h4><p><strong>Price:</strong> GHC 130</p></div>
+      <div class="plan"><h4>65GB</h4><p><strong>Price:</strong> GHC 150</p></div>
+      <div class="plan"><h4>73GB</h4><p><strong>Price:</strong> GHC 170</p></div>
+      <div class="plan"><h4>80GB</h4><p><strong>Price:</strong> GHC 180</p></div>
+      <div class="plan"><h4>90GB</h4><p><strong>Price:</strong> GHC 190</p></div>
+      <div class="plan"><h4>93GB</h4><p><strong>Price:</strong> GHC 200</p></div>
+      <div class="plan"><h4>100GB</h4><p><strong>Price:</strong> GHC 230</p></div>
+      <div class="plan"><h4>105GB</h4><p><strong>Price:</strong> GHC 260</p></div>
+      <div class="plan"><h4>110GB</h4><p><strong>Price:</strong> GHC 280</p></div>
+      <div class="plan"><h4>120GB</h4><p><strong>Price:</strong> GHC 300</p></div>
+    </div>
+    
+    <a href="buy-plan.html?network=mtn" class="buy-btn full-width">Buy MTN DATA</a>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
