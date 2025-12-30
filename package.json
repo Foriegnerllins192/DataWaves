@@ -1,5 +1,5 @@
 {
-  "name": "datawaves"
+  "name": "datawaves",
   "version": "1.0.0",
   "description": "Mobile Data Purchase Application",
   "main": "server.js",
@@ -30,6 +30,6 @@
     "nodejs",
     "express"
   ],
-  "author": "DataWaves Team"
+  "author": "DataWaves Team",
   "license": "MIT"
 }
