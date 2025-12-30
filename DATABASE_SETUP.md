@@ -1,6 +1,6 @@
 # Database Setup Instructions for XAMPP
 
-This guide will help you set up the MySQL database for the DataWay mobile data selling website using XAMPP.
+This guide will help you set up the MySQL database for the DataWaves mobile data selling website using XAMPP.
 
 **Note:** If you want data bundles without validity periods (so they don't expire), please use `DATABASE_SETUP_NO_VALIDITY.md` instead and import `mobile_data_app_no_validity.sql`.
 
@@ -30,7 +30,7 @@ This guide will help you set up the MySQL database for the DataWay mobile data s
 1. Click on the `mobile_data_app` database in the left sidebar
 2. Click on the "Import" tab at the top
 3. Click the "Choose File" button
-4. Navigate to your project folder: `c:\xampp\htdocs\DATAWAY\`
+4. Navigate to your project folder: `c:\xampp\htdocs\DATAWAVES\`
 5. Select the `mobile_data_app.sql` file
 6. Make sure "Format" is set to "SQL"
 7. Click the "Go" button at the bottom

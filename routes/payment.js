@@ -586,7 +586,7 @@ async function sendFailureNotification(user, transaction, errorMessage) {
     if (transaction.confirmation_method === 'sms' && transaction.confirmation_contact) {
       // Send SMS failure notification
       const message = `
-DataWay - Transaction Failed
+DataWaves - Transaction Failed
 
 Dear ${user.full_name},
 Your payment for ${transaction.network.toUpperCase()} data bundle failed.
@@ -595,9 +595,9 @@ Transaction ID: ${transaction.payment_reference}
 Amount: GHC ${parseFloat(transaction.amount).toFixed(2)}
 Error: ${errorMessage}
 
-Please try again or contact support@dataway.com
+Please try again or contact support@datawaves.com
 
-Thank you for choosing DataWay!
+Thank you for choosing DataWaves!
       `;
       
       await smsService.sendSMS(transaction.confirmation_contact, message);
@@ -619,7 +619,7 @@ Thank you for choosing DataWay!
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
             <div style="background: #f8f9fa; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-              <h1 style="color: #dc3545; margin: 0;">DataWay</h1>
+              <h1 style="color: #dc3545; margin: 0;">DataWaves</h1>
               <p style="color: #666; margin: 10px 0 0;">Transaction Failed</p>
             </div>
             
@@ -652,11 +652,11 @@ Thank you for choosing DataWay!
                 </table>
               </div>
               
-              <p>Please try again or contact our support team at support@dataway.com if you continue to experience issues.</p>
+              <p>Please try again or contact our support team at support@datawaves.com if you continue to experience issues.</p>
               
               <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #666;">
                 <p>Thank you for choosing DataWay!</p>
-                <p><small>DataWay - Your trusted mobile data provider</small></p>
+                <p><small>DataWaves - Your trusted mobile data provider</small></p>
               </div>
             </div>
           </div>

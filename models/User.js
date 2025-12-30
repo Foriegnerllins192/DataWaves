@@ -7,12 +7,12 @@ class User {
     const { full_name, email, password, phone } = userData;
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    const query = 'INSERT INTO users (full_name, email, password, phone) VALUES (?, ?, ?, ?)';
+    const query = 'INSERT INTO users (full_name, email, password, phone) VALUES ($1, $2, $3, $4) RETURNING id';
     const values = [full_name, email, hashedPassword, phone];
     
     try {
-      const [result] = await db.execute(query, values);
-      return result.insertId;
+      const result = await db.query(query, values);
+      return result.rows[0].id;
     } catch (error) {
       throw error;
     }
@@ -20,11 +20,11 @@ class User {
 
   // Find user by email
   static async findByEmail(email) {
-    const query = 'SELECT * FROM users WHERE email = ?';
+    const query = 'SELECT * FROM users WHERE email = $1';
     
     try {
-      const [rows] = await db.execute(query, [email]);
-      return rows[0];
+      const result = await db.query(query, [email]);
+      return result.rows[0];
     } catch (error) {
       throw error;
     }
@@ -32,11 +32,11 @@ class User {
 
   // Find user by ID
   static async findById(id) {
-    const query = 'SELECT id, full_name, email, phone, role FROM users WHERE id = ?';
+    const query = 'SELECT id, full_name, email, phone, role FROM users WHERE id = $1';
     
     try {
-      const [rows] = await db.execute(query, [id]);
-      return rows[0];
+      const result = await db.query(query, [id]);
+      return result.rows[0];
     } catch (error) {
       throw error;
     }
@@ -52,8 +52,8 @@ class User {
     const query = 'SELECT id, full_name, email, phone, created_at FROM users ORDER BY created_at DESC';
     
     try {
-      const [rows] = await db.execute(query);
-      return rows;
+      const result = await db.query(query);
+      return result.rows;
     } catch (error) {
       throw error;
     }

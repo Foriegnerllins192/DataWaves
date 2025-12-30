@@ -1,4 +1,4 @@
-# DataWay Implementation Summary
+# DataWaves Implementation Summary
 
 This document summarizes how we've implemented all the requirements from the Steps.md file to create a complete mobile data selling website for Ghana.
 

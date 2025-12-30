@@ -1,5 +1,5 @@
 {
-  "name": "dataway",
+  "name": "datawaves"
   "version": "1.0.0",
   "description": "Mobile Data Purchase Application",
   "main": "server.js",
@@ -15,7 +15,7 @@
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "mysql2": "^3.6.0",
+    "pg": "^8.11.0",
     "nodemailer": "^7.0.10",
     "paystack": "^2.0.1",
     "twilio": "^5.10.4",
@@ -30,6 +30,6 @@
     "nodejs",
     "express"
   ],
-  "author": "DataWay Team",
+  "author": "DataWaves Team"
   "license": "MIT"
 }

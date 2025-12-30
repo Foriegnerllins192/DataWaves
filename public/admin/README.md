@@ -1,6 +1,6 @@
-# DataWay Admin Panel
+# DataWaves Admin Panel
 
-This is the admin panel for the DataWay mobile data purchase application.
+This is the admin panel for the DataWaves mobile data purchase application.
 
 ## Features
 - Dashboard with statistics

@@ -13,7 +13,7 @@ class EmailService {
       }
     });
     
-    this.from = process.env.SMTP_FROM || 'no-reply@dataway.com';
+    this.from = process.env.SMTP_FROM || 'no-reply@datawaves.com';
   }
 
   // Send email
@@ -46,7 +46,7 @@ class EmailService {
 
   // Send payment confirmation email
   async sendPaymentConfirmation(to, transaction, user, plan) {
-    const subject = 'DataWay - Payment Confirmation';
+    const subject = 'DataWaves - Payment Confirmation';
     
     const html = `
       <!DOCTYPE html>
@@ -58,7 +58,7 @@ class EmailService {
       <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background: #f8f9fa; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-            <h1 style="color: #007bff; margin: 0;">DataWay</h1>
+            <h1 style="color: #007bff; margin: 0;">DataWaves</h1>
             <p style="color: #666; margin: 10px 0 0;">Mobile Data Purchase Confirmation</p>
           </div>
           
@@ -104,8 +104,8 @@ class EmailService {
             <p>If you have any questions, please contact our support team at support@dataway.com</p>
             
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #666;">
-              <p>Thank you for choosing DataWay!</p>
-              <p><small>DataWay - Your trusted mobile data provider</small></p>
+              <p>Thank you for choosing DataWaves!</p>
+              <p><small>DataWaves - Your trusted mobile data provider</small></p>
             </div>
           </div>
         </div>
@@ -134,7 +134,7 @@ class EmailService {
       <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background: #f8f9fa; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-            <h1 style="color: #dc3545; margin: 0;">DataWay Admin Alert</h1>
+            <h1 style="color: #dc3545; margin: 0;">DataWaves Admin Alert</h1>
           </div>
           
           <div style="padding: 30px; background: white; border: 1px solid #eee; border-top: none; border-radius: 0 0 8px 8px;">
@@ -157,7 +157,7 @@ class EmailService {
             ` : ''}
             
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #666;">
-              <p>This is an automated alert from DataWay system.</p>
+              <p>This is an automated alert from DataWaves system.</p>
             </div>
           </div>
         </div>
@@ -165,7 +165,7 @@ class EmailService {
       </html>
     `;
 
-    return this.sendEmail(adminEmail, `[DataWay Alert] ${subject}`, html);
+    return this.sendEmail(adminEmail, `[DataWaves Alert] ${subject}`, html);
   }
 }
 

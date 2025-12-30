@@ -22,23 +22,23 @@ router.get('/dashboard', isAdmin, async (req, res) => {
     // Get counts
     const [userCountResult, planCountResult, salesResult] = await Promise.all([
       // User count
-      db.execute('SELECT COUNT(*) as count FROM users'),
+      db.query('SELECT COUNT(*) as count FROM users'),
       // Plan count
-      db.execute('SELECT COUNT(*) as count FROM data_plans'),
+      db.query('SELECT COUNT(*) as count FROM data_plans'),
       // Today's sales
-      db.execute(`
+      db.query(`
         SELECT SUM(amount) as total 
         FROM transactions 
-        WHERE DATE(created_at) = CURDATE() AND status = 'success'
+        WHERE DATE(created_at) = CURRENT_DATE AND status = 'success'
       `)
     ]);
     
-    const userCount = userCountResult[0][0].count;
-    const planCount = planCountResult[0][0].count;
-    const salesToday = salesResult[0][0].total || 0;
+    const userCount = userCountResult.rows[0].count;
+    const planCount = planCountResult.rows[0].count;
+    const salesToday = salesResult.rows[0].total || 0;
     
     // Get recent transactions
-    const [transactionsResult] = await db.execute(`
+    const transactionsResult = await db.query(`
       SELECT t.*, u.full_name as user, dp.size as plan, dp.provider as network
       FROM transactions t
       JOIN users u ON t.user_id = u.id
@@ -47,7 +47,7 @@ router.get('/dashboard', isAdmin, async (req, res) => {
       LIMIT 10
     `);
     
-    const recentTransactions = transactionsResult.map(tx => ({
+    const recentTransactions = transactionsResult.rows.map(tx => ({
       user: tx.user,
       plan: tx.plan,
       network: tx.network,
@@ -176,8 +176,8 @@ router.put('/users/:id', isAdmin, async (req, res) => {
       validatedRole = role;
     }
     
-    const query = 'UPDATE users SET full_name = ?, email = ?, phone = ?, role = ? WHERE id = ?';
-    await db.execute(query, [full_name, validatedEmail, formattedPhone, validatedRole, userId]);
+    const query = 'UPDATE users SET full_name = $1, email = $2, phone = $3, role = $4 WHERE id = $5';
+    await db.query(query, [full_name, validatedEmail, formattedPhone, validatedRole, userId]);
     
     res.json({ success: true, message: 'User updated successfully' });
   } catch (error) {
@@ -197,13 +197,13 @@ router.delete('/users/:id', isAdmin, async (req, res) => {
     }
     
     // Don't allow deleting admin users
-    const [userResult] = await db.execute('SELECT role FROM users WHERE id = ?', [userId]);
-    if (userResult[0] && userResult[0].role === 'admin') {
+    const userResult = await db.query('SELECT role FROM users WHERE id = $1', [userId]);
+    if (userResult.rows[0] && userResult.rows[0].role === 'admin') {
       return res.status(400).json({ error: 'Cannot delete admin users' });
     }
     
-    const query = 'DELETE FROM users WHERE id = ?';
-    await db.execute(query, [userId]);
+    const query = 'DELETE FROM users WHERE id = $1';
+    await db.query(query, [userId]);
     
     res.json({ success: true, message: 'User deleted successfully' });
   } catch (error) {
@@ -238,10 +238,10 @@ router.post('/plans', isAdmin, async (req, res) => {
       });
     }
     
-    const query = 'INSERT INTO data_plans (provider, size, price, custom) VALUES (?, ?, ?, 1)';
-    const [result] = await db.execute(query, [provider, size, price]);
+    const query = 'INSERT INTO data_plans (provider, size, price, custom) VALUES ($1, $2, $3, 1) RETURNING id';
+    const result = await db.query(query, [provider, size, price]);
     
-    res.status(201).json({ success: true, id: result.insertId });
+    res.status(201).json({ success: true, id: result.rows[0].id });
   } catch (error) {
     console.error('Add plan error:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -269,8 +269,8 @@ router.put('/plans/:id', isAdmin, async (req, res) => {
       });
     }
     
-    const query = 'UPDATE data_plans SET provider = ?, size = ?, price = ? WHERE id = ?';
-    await db.execute(query, [provider, size, price, planId]);
+    const query = 'UPDATE data_plans SET provider = $1, size = $2, price = $3 WHERE id = $4';
+    await db.query(query, [provider, size, price, planId]);
     
     res.json({ success: true, message: 'Plan updated successfully' });
   } catch (error) {
@@ -289,8 +289,8 @@ router.delete('/plans/:id', isAdmin, async (req, res) => {
       return res.status(400).json({ error: 'Invalid plan ID' });
     }
     
-    const query = 'DELETE FROM data_plans WHERE id = ?';
-    await db.execute(query, [planId]);
+    const query = 'DELETE FROM data_plans WHERE id = $1';
+    await db.query(query, [planId]);
     
     res.json({ success: true, message: 'Plan deleted successfully' });
   } catch (error) {

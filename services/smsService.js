@@ -54,7 +54,7 @@ class SMSService {
   // Send payment confirmation SMS
   async sendPaymentConfirmation(to, transaction, user, plan) {
     const message = `
-DataWay Payment Confirmation
+DataWaves Payment Confirmation
 
 Dear ${user.full_name},
 Your payment of GHC ${parseFloat(transaction.amount).toFixed(2)} for ${plan.size}GB ${transaction.network.toUpperCase()} data has been processed successfully.
@@ -64,7 +64,7 @@ Date: ${new Date(transaction.created_at).toLocaleString()}
 
 Your data bundle will be delivered shortly.
 
-Thank you for choosing DataWay!
+Thank you for choosing DataWaves!
     `;
 
     return this.sendSMS(to, message);
@@ -79,7 +79,7 @@ Thank you for choosing DataWay!
     }
 
     const fullMessage = `
-DataWay Admin Alert
+DataWaves Admin Alert
 
 ${message}
 

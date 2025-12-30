@@ -1,4 +1,4 @@
-# DataWay - Mobile Data Purchase Application (Complete Implementation)
+# DataWaves - Mobile Data Purchase Application (Complete Implementation)
 
 This is a complete Node.js/Express implementation of a mobile data purchase application for Ghana, with full payment processing, aggregator integration, and admin features.
 
@@ -51,7 +51,7 @@ This is a complete Node.js/Express implementation of a mobile data purchase appl
 ## Technologies Used
 - Node.js
 - Express.js
-- MySQL (with mysql2 package)
+- PostgreSQL (with pg package)
 - Paystack API for payments
 - Reloadly API for data topups
 - bcrypt for password hashing
@@ -61,7 +61,7 @@ This is a complete Node.js/Express implementation of a mobile data purchase appl
 
 ## Project Structure
 ```
-DATAWAY/
+DATAWAVES/
 ├── config/
 │   └── db.js              # Database configuration
 ├── logs/                  # Application logs
@@ -95,10 +95,10 @@ DATAWAY/
 ## Setup Instructions
 
 1. **Database Setup**:
-   - Create a MySQL database named `mobile_data_app`
-   - Import the database schema from `mobile_data_app.sql` (with validity periods) or `mobile_data_app_no_validity.sql` (without validity periods)
+   - Set up a PostgreSQL database using Supabase (see [PROJECT_SETUP_GUIDE.md](PROJECT_SETUP_GUIDE.md) for detailed instructions)
+   - Import the database schema from `mobile_data_app_postgresql.sql`
    - Update the database credentials in `.env` if needed
-   - See `DATABASE_SETUP.md` or `DATABASE_SETUP_NO_VALIDITY.md` for detailed instructions
+   - See [POSTGRESQL_SETUP.md](POSTGRESQL_SETUP.md) for detailed PostgreSQL setup instructions
 
 2. **Environment Configuration**:
    - Update `.env` with your:
@@ -122,7 +122,7 @@ DATAWAY/
    ```
 
 5. **Access the Application**:
-   Open your browser and navigate to `http://localhost:3002`
+   Open your browser and navigate to `http://localhost:3003`
 
 ## API Endpoints
 
@@ -184,7 +184,7 @@ All important events are logged to daily files in the `logs/` directory:
 - Errors and exceptions
 
 ## Author
-DataWay Team
+DataWaves Team
 
 ## License
 MIT

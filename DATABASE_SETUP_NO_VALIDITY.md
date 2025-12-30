@@ -1,6 +1,6 @@
 # Database Setup Instructions for XAMPP (No Validity Periods)
 
-This guide will help you set up the MySQL database for the DataWay mobile data selling website using XAMPP. This version removes validity periods from all data bundles so they don't expire.
+This guide will help you set up the MySQL database for the DataWaves mobile data selling website using XAMPP. This version removes validity periods from all data bundles so they don't expire.
 
 ## Prerequisites
 
@@ -28,7 +28,7 @@ This guide will help you set up the MySQL database for the DataWay mobile data s
 1. Click on the `mobile_data_app` database in the left sidebar
 2. Click on the "Import" tab at the top
 3. Click the "Choose File" button
-4. Navigate to your project folder: `c:\xampp\htdocs\DATAWAY\`
+4. Navigate to your project folder: `c:\xampp\htdocs\DATAWAVES\`
 5. Select the `mobile_data_app_no_validity.sql` file
 6. Make sure "Format" is set to "SQL"
 7. Click the "Go" button at the bottom

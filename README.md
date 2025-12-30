@@ -1,8 +1,8 @@
-# DataWay - Mobile Data Purchase Application
+# DataWaves - Mobile Data Purchase Application
 
 **IMPORTANT: Please see [COMPREHENSIVE_README.md](COMPREHENSIVE_README.md) for the complete documentation of the fully implemented system.**
 
-This is a converted Node.js/Express version of the original PHP application for purchasing mobile data plans.
+This is a Node.js/Express application for purchasing mobile data plans.
 
 ## Features
 - User registration and authentication
@@ -14,14 +14,14 @@ This is a converted Node.js/Express version of the original PHP application for 
 ## Technologies Used
 - Node.js
 - Express.js
-- MySQL (with mysql2 package)
+- PostgreSQL (with pg package)
 - bcrypt for password hashing
 - express-session for session management
 - HTML/CSS/JavaScript for frontend
 
 ## Project Structure
 ```
-DATAWAY/
+DATAWAVES/
 ├── config/
 │   └── db.js              # Database configuration
 ├── models/
@@ -43,10 +43,10 @@ DATAWAY/
 ## Setup Instructions
 
 1. **Database Setup**:
-   - Create a MySQL database named `mobile_data_app`
-   - Import the database schema from `mobile_data_app.sql` (with validity periods) or `mobile_data_app_no_validity.sql` (without validity periods)
-   - Update the database credentials in `config/db.js` if needed
-   - See `DATABASE_SETUP.md` or `DATABASE_SETUP_NO_VALIDITY.md` for detailed instructions
+   - Set up a PostgreSQL database using Supabase (see [PROJECT_SETUP_GUIDE.md](PROJECT_SETUP_GUIDE.md) for detailed instructions)
+   - Import the database schema from `mobile_data_app_postgresql.sql`
+   - Update the database credentials in `.env` file
+   - See [POSTGRESQL_SETUP.md](POSTGRESQL_SETUP.md) for detailed PostgreSQL setup instructions
 
 2. **Install Dependencies**:
    ```bash
@@ -63,7 +63,7 @@ DATAWAY/
    ```
 
 4. **Access the Application**:
-   Open your browser and navigate to `http://localhost:3002`
+   Open your browser and navigate to `http://localhost:3003`
 
 ## API Endpoints
 
@@ -75,16 +75,16 @@ DATAWAY/
 - `POST /api/purchase` - Purchase a data plan
 - `GET /api/user` - Get current user data
 
-## Changes from PHP Version
+## Backend Implementation
 
-1. **Backend**: 
-   - Converted from PHP to Node.js/Express
-   - Uses MySQL2 instead of PDO
+1. **Technology Stack**: 
+   - Built with Node.js/Express instead of PHP
+   - Uses PostgreSQL with pg package instead of MySQL
    - Implements proper session management with express-session
    - Password hashing with bcrypt
 
 2. **Frontend**:
-   - All PHP files converted to static HTML
+   - All pages converted to static HTML
    - JavaScript updated to work with new API endpoints
    - CSS remains unchanged
 
@@ -95,13 +95,13 @@ DATAWAY/
 
 ## Notes
 
-- The CSS file (`style.css`) remains unchanged from the PHP version
+- The CSS file (`style.css`) remains unchanged from the original version
 - All HTML files are now static and served directly by Express
 - JavaScript has been updated to work with the new Node.js API endpoints
-- Database schema should match the original PHP application
+- Database schema has been adapted for PostgreSQL
 
 ## Author
-DataWay Team
+DataWaves Team
 
 ## License
 MIT
