@@ -51,6 +51,7 @@ const isAdmin = (req, res, next) => {
 app.use("/api", apiRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/payment", require("./routes/payment"));
+app.use("/api/validation", require("./routes/validation"));
 
 // Health check endpoint for DigitalOcean
 app.get("/health", (req, res) => {

@@ -11,247 +11,269 @@
   <link rel="stylesheet" href="style.css" />
   <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    .receipt-container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .receipt-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 15px;
-      margin-bottom: 20px;
-    }
-    .receipt-section {
-      margin-bottom: 25px;
-    }
-    .receipt-section h3 {
-      color: #333;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-      margin-bottom: 15px;
-    }
-    .receipt-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .receipt-table td {
-      padding: 8px 12px;
-      border-bottom: 1px solid #eee;
-    }
-    .receipt-table td:first-child {
-      width: 40%;
-      font-weight: bold;
-    }
-    .receipt-footer {
-      text-align: center;
-      margin: 30px 0;
-      padding: 20px;
-      border-top: 1px solid #eee;
-      color: #666;
-    }
-    .receipt-actions {
-      text-align: center;
-      margin-top: 20px;
-    }
-    .btn-print {
-      background: #28a745;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    .btn-print:hover {
-      background: #218838;
-    }
-    .btn {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      text-decoration: none;
-      display: inline-block;
-      margin: 0 5px;
-    }
-    .btn-primary {
-      background-color: #007bff;
-      color: white;
-    }
-    .btn-primary:hover {
-      background-color: #0069d9;
-    }
-    .btn-secondary {
-      background-color: #6c757d;
-      color: white;
-    }
-    .btn-secondary:hover {
-      background-color: #5a6268;
-    }
-    .btn-success {
-      background-color: #28a745;
-      color: white;
-    }
-    .btn-success:hover {
-      background-color: #218838;
-    }
-    .btn-warning {
-      background-color: #ffc107;
-      color: #212529;
-    }
-    .btn-warning:hover {
-      background-color: #e0a800;
-    }
-    .alert {
-      padding: 12px;
-      border-radius: 4px;
-      margin: 15px 0;
-    }
-    .alert.success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-    .alert.error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
-    @media print {
-      .btn-print, .receipt-actions, .navbar, .back-button, #alert {
-        display: none;
-      }
-      .receipt-container {
-        box-shadow: none;
-        border: none;
-      }
-    }
-  </style>
 </head>
 <body>
-  <!-- Navbar -->
+  <!-- Modern Navbar -->
   <nav class="navbar">
-    <div class="logo"><a href="index.html">DataWaves</a></div>
-    <ul class="nav-links">
-      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
-      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
-      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
-    </ul>
-    <div class="auth-links">
-      <!-- User info will be displayed here after login -->
-      <div id="user-info" style="display: none;">
-        <a href="account.html" class="btn-dashboard" id="user-button" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;"></a>
-        | <a href="#" onclick="logout()" class="btn-logout">Logout</a>
-      </div>
-      <!-- Default auth links for logged out users -->
-      <div id="auth-links-default">
-        <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
-       |<a href="account.html" class="btn-dashboard">Account</a> 
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">DW</div>
+        <div class="brand-text">DataWaves</div>
+      </a>
+      
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="mtn.html" class="nav-link">
+            <img src="images/mtn.png" alt="MTN">
+            <span class="nav-tooltip">MTN Ghana</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="telecel.html" class="nav-link">
+            <img src="images/telecel.png" alt="Telecel">
+            <span class="nav-tooltip">Telecel Ghana</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="at.html" class="nav-link">
+            <img src="images/airteltigo.png" alt="AirtelTigo">
+            <span class="nav-tooltip">AirtelTigo Ghana</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="navbar-actions">
+        <!-- User info will be displayed here after login -->
+        <div id="user-info" class="user-menu" style="display: none;">
+          <a href="account.html" class="user-button" id="user-button">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <span id="user-name">Account</span>
+          </a>
+          <a href="#" onclick="logout()" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </a>
+        </div>
+        
+        <!-- Default auth links for logged out users -->
+        <div id="auth-links-default" class="auth-buttons">
+          <a href="login.html" class="auth-btn login">
+            <i class="fas fa-sign-in-alt"></i>
+            Login
+          </a>
+          <a href="register.html" class="auth-btn register">
+            <i class="fas fa-user-plus"></i>
+            Register
+          </a>
+          <a href="account.html" class="auth-btn account">
+            <i class="fas fa-user"></i>
+            Account
+          </a>
+        </div>
+        
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
     </div>
   </nav>
 
-  <!-- Receipt Content -->
-  <section class="container">
-    <a href="dashboard.html" class="back-button"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-    
-    <div class="receipt-container">
-      <div class="receipt-header">
-        <div>
-          <h2><i class="fas fa-receipt"></i> Payment Receipt</h2>
-          <p>Transaction Reference: <strong id="transactionId">-</strong></p>
-        </div>
-        <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print Receipt</button>
-      </div>
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    <!-- Receipt Section -->
+  <div class="receipt-wrapper">
+    <div class="container">
+      <a href="dashboard.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </a>
       
-      <div id="alert" class="alert" style="display: none;"></div>
-      
-      <div class="receipt-details">
-        <div class="receipt-section">
-          <h3>Transaction Details</h3>
-          <table class="receipt-table">
-            <tr>
-              <td><strong>Date & Time:</strong></td>
-              <td id="transactionDate">-</td>
-            </tr>
-            <tr>
-              <td><strong>Status:</strong></td>
-              <td><span class="status success" id="transactionStatus">-</span></td>
-            </tr>
-            <tr>
-              <td><strong>Transaction ID:</strong></td>
-              <td id="transactionReference">-</td>
-            </tr>
-          </table>
+      <div class="receipt-card">
+        <div class="receipt-header">
+          <div class="receipt-icon">
+            <i class="fas fa-receipt"></i>
+          </div>
+          <div class="receipt-title">
+            <h1>Payment Receipt</h1>
+            <p>Transaction completed successfully</p>
+          </div>
+          <button class="print-btn" onclick="window.print()">
+            <i class="fas fa-print"></i>
+            Print Receipt
+          </button>
         </div>
         
-        <div class="receipt-section">
-          <h3>Customer Information</h3>
-          <table class="receipt-table">
-            <tr>
-              <td><strong>Name:</strong></td>
-              <td id="customerName">-</td>
-            </tr>
-            <tr>
-              <td><strong>Email:</strong></td>
-              <td id="customerEmail">-</td>
-            </tr>
-            <tr>
-              <td><strong>Phone:</strong></td>
-              <td id="customerPhone">-</td>
-            </tr>
-          </table>
+        <div id="alert" class="alert-message" style="display: none;"></div>
+        
+        <div class="receipt-content">
+          <div class="transaction-summary">
+            <div class="summary-item">
+              <span class="label">Transaction ID</span>
+              <span class="value" id="transactionId">-</span>
+            </div>
+            <div class="summary-item">
+              <span class="label">Date & Time</span>
+              <span class="value" id="transactionDate">-</span>
+            </div>
+            <div class="summary-item">
+              <span class="label">Status</span>
+              <span class="status-badge success" id="transactionStatus">-</span>
+            </div>
+          </div>
+          
+          <div class="receipt-sections">
+            <div class="receipt-section">
+              <h3><i class="fas fa-user"></i> Customer Information</h3>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">Name</span>
+                  <span class="info-value" id="customerName">-</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Email</span>
+                  <span class="info-value" id="customerEmail">-</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Phone</span>
+                  <span class="info-value" id="customerPhone">-</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="receipt-section">
+              <h3><i class="fas fa-shopping-cart"></i> Order Details</h3>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">Network</span>
+                  <span class="info-value" id="network">-</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Data Bundle</span>
+                  <span class="info-value" id="dataBundle">-</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Recipient Phone</span>
+                  <span class="info-value" id="recipientPhone">-</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Payment Method</span>
+                  <span class="info-value" id="paymentMethod">-</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="receipt-section payment-section">
+              <h3><i class="fas fa-credit-card"></i> Payment Summary</h3>
+              <div class="payment-total">
+                <span class="total-label">Amount Paid</span>
+                <span class="total-amount" id="amountPaid">-</span>
+              </div>
+            </div>
+          </div>
         </div>
         
-        <div class="receipt-section">
-          <h3>Order Details</h3>
-          <table class="receipt-table">
-            <tr>
-              <td><strong>Network:</strong></td>
-              <td id="network">-</td>
-            </tr>
-            <tr>
-              <td><strong>Data Bundle:</strong></td>
-              <td id="dataBundle">-</td>
-            </tr>
-            <tr>
-              <td><strong>Recipient Phone:</strong></td>
-              <td id="recipientPhone">-</td>
-            </tr>
-            <tr>
-              <td><strong>Payment Method:</strong></td>
-              <td id="paymentMethod">-</td>
-            </tr>
-            <tr>
-              <td><strong>Amount Paid:</strong></td>
-              <td id="amountPaid">-</td>
-            </tr>
-          </table>
+        <div class="receipt-footer">
+          <div class="footer-message">
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <h4>Thank you for your purchase!</h4>
+              <p>Your data bundle has been successfully delivered to your phone.</p>
+            </div>
+          </div>
+          
+          <div class="support-info">
+            <p>Need help? Contact us at <strong>support@datawaves.com</strong></p>
+            <p><strong>DataWaves Ghana</strong> - Your trusted mobile data provider</p>
+          </div>
         </div>
-      </div>
-      
-      <div class="receipt-footer">
-        <p>Thank you for your purchase!</p>
-        <p>If you have any questions, please contact support@dataway.com</p>
-        <p><strong>DataWaves GH</strong> - Your trusted mobile data provider</p>
-      </div>
-      
-      <div class="receipt-actions">
-        <button class="btn btn-warning" onclick="resendReceipt()"><i class="fas fa-redo"></i> Resend Receipt</button>
-        <button class="btn btn-primary" onclick="window.location.href='dashboard.html'"><i class="fas fa-tachometer-alt"></i> View Dashboard</button>
-        <button class="btn btn-secondary" onclick="window.location.href='buy-plan.html'"><i class="fas fa-shopping-cart"></i> Buy More Data</button>
+        
+        <div class="receipt-actions">
+          <button class="action-btn secondary" onclick="resendReceipt()">
+            <i class="fas fa-envelope"></i>
+            Resend Receipt
+          </button>
+          <button class="action-btn primary" onclick="window.location.href='dashboard.html'">
+            <i class="fas fa-tachometer-alt"></i>
+            View Dashboard
+          </button>
+          <button class="action-btn success" onclick="window.location.href='buy-plan.html'">
+            <i class="fas fa-shopping-cart"></i>
+            Buy More Data
+          </button>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-brand">
+            <div class="brand-icon">DW</div>
+            <div class="brand-info">
+              <h3>DataWaves</h3>
+              <p>Your trusted mobile data provider in Ghana</p>
+            </div>
+          </div>
+          <div class="footer-description">
+            <p>Fast, reliable, and affordable mobile data bundles for MTN, Telecel, and AirtelTigo networks. Experience seamless connectivity with our 20-minute delivery guarantee.</p>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Networks</h4>
+          <ul class="footer-links">
+            <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" class="footer-network-icon"> MTN Ghana</a></li>
+            <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" class="footer-network-icon"> Telecel Ghana</a></li>
+            <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" class="footer-network-icon"> AirtelTigo Ghana</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Services</h4>
+          <ul class="footer-links">
+            <li><a href="buy-plan.html">Buy Data Plans</a></li>
+            <li><a href="dashboard.html">Account Dashboard</a></li>
+            <li><a href="receipt.html">Transaction History</a></li>
+            <li><a href="account.html">Account Settings</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Delivery Info</h4>
+          <ul class="footer-links">
+            <li><i class="fas fa-clock"></i> 20-Minute Delivery</li>
+            <li><i class="fas fa-shield-check"></i> Guaranteed Delivery</li>
+            <li><i class="fas fa-sms"></i> SMS Notifications</li>
+            <li><i class="fas fa-envelope"></i> Email Receipts</li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:support@datawaves.com"><i class="fas fa-envelope"></i> support@datawaves.com</a></li>
+            <li><a href="tel:+233123456789"><i class="fas fa-phone"></i> +233 123 456 789</a></li>
+            <li><i class="fas fa-clock"></i> 24/7 Customer Support</li>
+            <li><i class="fas fa-headset"></i> Live Chat Available</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="footer-bottom-content">
+          <p>&copy; 2026 DataWaves Ghana. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script>
     let currentReference = null;
@@ -284,8 +306,8 @@
       
       // Show loading in the alert area
       const alertDiv = document.getElementById('alert');
-      alertDiv.className = 'alert';
-      alertDiv.textContent = 'Resending receipt...';
+      alertDiv.className = 'alert-message info';
+      alertDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resending receipt...';
       alertDiv.style.display = 'block';
       
       fetch('/api/payment/resend-receipt', {
@@ -298,11 +320,11 @@
       .then(res => res.json())
       .then(response => {
         if (response.success) {
-          alertDiv.className = 'alert success';
-          alertDiv.textContent = response.message;
+          alertDiv.className = 'alert-message success';
+          alertDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + response.message;
         } else {
-          alertDiv.className = 'alert error';
-          alertDiv.textContent = response.error || 'Failed to resend receipt';
+          alertDiv.className = 'alert-message error';
+          alertDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + (response.error || 'Failed to resend receipt');
         }
         
         // Hide alert after 5 seconds
@@ -312,8 +334,8 @@
       })
       .catch(err => {
         console.error('Error resending receipt:', err);
-        alertDiv.className = 'alert error';
-        alertDiv.textContent = 'Failed to resend receipt';
+        alertDiv.className = 'alert-message error';
+        alertDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to resend receipt';
         
         // Hide alert after 5 seconds
         setTimeout(() => {

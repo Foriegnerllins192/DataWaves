@@ -27,7 +27,6 @@ Your package.json file has been corrected and is now valid JSON. Here's the fina
     "pg": "^8.11.0",
     "nodemailer": "^7.0.10",
     "paystack": "^2.0.1",
-    "twilio": "^5.10.4",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
@@ -118,14 +117,13 @@ git push origin main
 7. In the "Environment Variables" section, add all your .env variables:
    - PAYSTACK_SECRET_KEY
    - PAYSTACK_PUBLIC_KEY
-   - TWILIO_ACCOUNT_SID
-   - TWILIO_AUTH_TOKEN
-   - TWILIO_PHONE_NUMBER
+   - SMS_PHONE_API_KEY
    - SMTP_HOST
    - SMTP_PORT
    - SMTP_USER
    - SMTP_PASS
    - SMTP_FROM
+   - DATABASE_URL (Neon connection string) OR individual DB variables:
    - DB_HOST
    - DB_USER
    - DB_PASSWORD

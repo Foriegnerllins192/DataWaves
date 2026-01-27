@@ -2,6 +2,7 @@ const express = require('express');
 const paymentService = require('../services/paymentService');
 const momoService = require('../services/momoService');
 const aggregatorService = require('../services/aggregatorService');
+const validationService = require('../services/validationService');
 const DataPlan = require('../models/DataPlan');
 const Transaction = require('../models/Transaction');
 const User = require('../models/User');
@@ -23,7 +24,19 @@ router.post('/initialize', async (req, res) => {
       return res.status(401).json({ error: 'Authentication required' });
     }
 
-    const { plan_id, phone_number, confirmation_method, confirmation_contact, payment_method } = req.body;
+    let { plan_id, phone_number, payment_method } = req.body;
+
+    // Validate required fields
+    if (!plan_id || !phone_number) {
+      return res.status(400).json({ error: 'Plan ID and phone number are required' });
+    }
+
+    // Force Paystack as the only payment method
+    payment_method = 'paystack';
+    
+    // Set automatic notifications to both SMS and email
+    const confirmation_method = 'both';
+    const confirmation_contact = phone_number; // Use phone for SMS
 
     logger.info('Payment initialization started', {
       userId: req.session.user.id,
@@ -47,10 +60,66 @@ router.post('/initialize', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    if (payment_method === 'momo') {
-      // Handle MoMo payment
-      const transactionId = uuidv4();
-      
+    // NETWORK-SPECIFIC PHONE VALIDATION
+    logger.info('Starting network-specific phone validation', {
+      phoneNumber: phone_number,
+      network: plan.provider,
+      userId: user.id
+    });
+
+    const phoneValidation = await validationService.validatePhoneNumberForNetwork(
+      phone_number,
+      plan.provider
+    );
+
+    if (!phoneValidation.valid) {
+      logger.warn('Phone validation failed', {
+        phoneNumber: phone_number,
+        network: plan.provider,
+        error: phoneValidation.error,
+        code: phoneValidation.code,
+        userId: user.id
+      });
+
+      return res.status(400).json({
+        error: phoneValidation.error,
+        code: phoneValidation.code,
+        network: plan.provider,
+        detectedNetwork: phoneValidation.detectedNetwork
+      });
+    }
+
+    logger.info('Phone validation successful', {
+      phoneNumber: phoneValidation.phoneNumber,
+      network: phoneValidation.network,
+      userId: user.id
+    });
+
+    // Use validated phone number format
+    phone_number = phoneValidation.phoneNumber;
+
+    // Handle Paystack payment (only option)
+    const paymentData = {
+      email: user.email,
+      amount: plan.customer_price || plan.price,
+      metadata: {
+        user_id: user.id,
+        plan_id: plan.id,
+        phone_number: phone_number,
+        network: plan.provider,
+        confirmation_method: confirmation_method,
+        confirmation_contact: confirmation_contact,
+        user_email: user.email // Store user email for notifications
+      }
+    };
+
+    const paymentResponse = await paymentService.initializePayment(
+      user.email,
+      plan.customer_price || plan.price,
+      paymentData.metadata
+    );
+
+    if (paymentResponse.status) {
       // Create a pending transaction
       const transactionData = {
         user_id: user.id,
@@ -59,105 +128,38 @@ router.post('/initialize', async (req, res) => {
         phone_number: phone_number,
         amount: plan.customer_price || plan.price,
         status: 'pending',
-        payment_reference: transactionId,
+        payment_reference: paymentResponse.data.reference,
         confirmation_method: confirmation_method,
         confirmation_contact: confirmation_contact
       };
 
-      const transactionIdInDB = await Transaction.create(transactionData);
+      const transactionId = await Transaction.create(transactionData);
       
-      logger.transaction(transactionId, 'created', {
+      logger.transaction(paymentResponse.data.reference, 'created', {
         userId: user.id,
         planId: plan.id,
         network: plan.provider,
         amount: plan.customer_price || plan.price
       });
-      
-      // Request payment from user
-      const momoResponse = await momoService.requestToPay(
-        phone_number,
-        plan.customer_price || plan.price,
-        transactionId,
-        `Payment for ${plan.size}GB ${plan.provider} data bundle`,
-        `Data bundle purchase for ${plan.size}GB`
-      );
 
-      logger.payment(transactionId, 'momo_requested', {
+      logger.payment(paymentResponse.data.reference, 'paystack_initialized', {
         userId: user.id,
         amount: plan.customer_price || plan.price,
-        phoneNumber: phone_number
+        email: user.email
       });
 
       res.json({
         success: true,
-        payment_method: 'momo',
-        reference: transactionId,
-        message: 'Payment request sent to your mobile money account. Please check your phone to complete the payment.'
+        payment_method: 'paystack',
+        payment_url: paymentResponse.data.authorization_url,
+        reference: paymentResponse.data.reference
       });
     } else {
-      // Handle Paystack payment (default)
-      const paymentData = {
-        email: user.email,
-        amount: plan.customer_price || plan.price,
-        metadata: {
-          user_id: user.id,
-          plan_id: plan.id,
-          phone_number: phone_number,
-          network: plan.provider,
-          confirmation_method: confirmation_method,
-          confirmation_contact: confirmation_contact
-        }
-      };
-
-      const paymentResponse = await paymentService.initializePayment(
-        user.email,
-        plan.customer_price || plan.price,
-        paymentData.metadata
-      );
-
-      if (paymentResponse.status) {
-        // Create a pending transaction
-        const transactionData = {
-          user_id: user.id,
-          plan_id: plan.id,
-          network: plan.provider,
-          phone_number: phone_number,
-          amount: plan.customer_price || plan.price,
-          status: 'pending',
-          payment_reference: paymentResponse.data.reference,
-          confirmation_method: confirmation_method,
-          confirmation_contact: confirmation_contact
-        };
-
-        const transactionId = await Transaction.create(transactionData);
-        
-        logger.transaction(paymentResponse.data.reference, 'created', {
-          userId: user.id,
-          planId: plan.id,
-          network: plan.provider,
-          amount: plan.customer_price || plan.price
-        });
-
-        logger.payment(paymentResponse.data.reference, 'paystack_initialized', {
-          userId: user.id,
-          amount: plan.customer_price || plan.price,
-          email: user.email
-        });
-
-        res.json({
-          success: true,
-          payment_method: 'paystack',
-          payment_url: paymentResponse.data.authorization_url,
-          reference: paymentResponse.data.reference
-        });
-      } else {
-        logger.error('Paystack payment initialization failed', {
-          userId: user.id,
-          planId: plan.id,
-          error: paymentResponse
-        });
-        res.status(400).json({ error: 'Payment initialization failed' });
-      }
+      logger.error('Paystack payment initialization failed', {
+        error: paymentResponse.message,
+        userId: user.id
+      });
+      res.status(400).json({ error: paymentResponse.message || 'Payment initialization failed' });
     }
   } catch (error) {
     logger.error('Payment initialization error', { 
@@ -539,35 +541,73 @@ async function handleFailedPayment(data) {
 // Send confirmation message (SMS or Email)
 async function sendConfirmationMessage(user, transaction, plan, topupResponse) {
   try {
-    logger.info('Sending confirmation message', {
+    logger.info('Sending confirmation messages', {
       userId: user.id,
       transactionId: transaction.payment_reference,
       method: transaction.confirmation_method
     });
     
-    if (transaction.confirmation_method === 'sms' && transaction.confirmation_contact) {
-      // Send SMS confirmation
+    // Always send both SMS and email notifications
+    let smsSuccess = false;
+    let emailSuccess = false;
+    
+    // Send SMS confirmation
+    try {
       await smsService.sendPaymentConfirmation(
-        transaction.confirmation_contact,
+        transaction.confirmation_contact || transaction.phone_number,
         transaction,
         user,
         plan
       );
-    } else if (transaction.confirmation_method === 'email' && transaction.confirmation_contact) {
-      // Send Email confirmation
-      await emailService.sendPaymentConfirmation(
-        transaction.confirmation_contact,
-        transaction,
-        user,
-        plan
-      );
-    } else {
-      logger.warn('No confirmation method specified for transaction', {
+      smsSuccess = true;
+      logger.info('SMS confirmation sent successfully', { 
+        phoneNumber: transaction.confirmation_contact || transaction.phone_number,
+        transactionId: transaction.payment_reference
+      });
+    } catch (smsError) {
+      logger.error('SMS confirmation failed', { 
+        error: smsError.message,
+        phoneNumber: transaction.confirmation_contact || transaction.phone_number,
         transactionId: transaction.payment_reference
       });
     }
+    
+    // Send Email confirmation
+    try {
+      await emailService.sendPaymentConfirmation(
+        user.email,
+        transaction,
+        user,
+        plan
+      );
+      emailSuccess = true;
+      logger.info('Email confirmation sent successfully', { 
+        email: user.email,
+        transactionId: transaction.payment_reference
+      });
+    } catch (emailError) {
+      logger.error('Email confirmation failed', { 
+        error: emailError.message,
+        email: user.email,
+        transactionId: transaction.payment_reference
+      });
+    }
+    
+    // Log overall success
+    if (smsSuccess || emailSuccess) {
+      logger.info('At least one confirmation method succeeded', {
+        smsSuccess,
+        emailSuccess,
+        transactionId: transaction.payment_reference
+      });
+    } else {
+      logger.warn('All confirmation methods failed', {
+        transactionId: transaction.payment_reference
+      });
+    }
+    
   } catch (error) {
-    logger.error('Error sending confirmation message', { 
+    logger.error('Error sending confirmation messages', { 
       error: error.message,
       transactionId: transaction.payment_reference
     });
@@ -577,15 +617,18 @@ async function sendConfirmationMessage(user, transaction, plan, topupResponse) {
 // Send failure notification
 async function sendFailureNotification(user, transaction, errorMessage) {
   try {
-    logger.info('Sending failure notification', {
+    logger.info('Sending failure notifications', {
       userId: user.id,
-      transactionId: transaction.payment_reference,
-      method: transaction.confirmation_method
+      transactionId: transaction.payment_reference
     });
     
-    if (transaction.confirmation_method === 'sms' && transaction.confirmation_contact) {
-      // Send SMS failure notification
-      const message = `
+    // Always send both SMS and email failure notifications
+    let smsSuccess = false;
+    let emailSuccess = false;
+    
+    // Send SMS failure notification
+    try {
+      const smsMessage = `
 DataWaves - Transaction Failed
 
 Dear ${user.full_name},
@@ -600,15 +643,23 @@ Please try again or contact support@datawaves.com
 Thank you for choosing DataWaves!
       `;
       
-      await smsService.sendSMS(transaction.confirmation_contact, message);
+      await smsService.sendSMS(transaction.confirmation_contact || transaction.phone_number, smsMessage.trim());
+      smsSuccess = true;
       logger.info('SMS failure notification sent', { 
-        phoneNumber: transaction.confirmation_contact,
+        phoneNumber: transaction.confirmation_contact || transaction.phone_number,
         transactionId: transaction.payment_reference
       });
-    } else if (transaction.confirmation_method === 'email' && transaction.confirmation_contact) {
-      // Send Email failure notification
-      const subject = 'DataWay - Transaction Failed';
-      
+    } catch (smsError) {
+      logger.error('SMS failure notification failed', { 
+        error: smsError.message,
+        phoneNumber: transaction.confirmation_contact || transaction.phone_number,
+        transactionId: transaction.payment_reference
+      });
+    }
+    
+    // Send Email failure notification
+    try {
+      const subject = 'DataWaves - Transaction Failed';
       const html = `
         <!DOCTYPE html>
         <html>
@@ -655,7 +706,7 @@ Thank you for choosing DataWaves!
               <p>Please try again or contact our support team at support@datawaves.com if you continue to experience issues.</p>
               
               <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #666;">
-                <p>Thank you for choosing DataWay!</p>
+                <p>Thank you for choosing DataWaves!</p>
                 <p><small>DataWaves - Your trusted mobile data provider</small></p>
               </div>
             </div>
@@ -664,14 +715,35 @@ Thank you for choosing DataWaves!
         </html>
       `;
       
-      await emailService.sendEmail(transaction.confirmation_contact, subject, html);
+      await emailService.sendEmail(user.email, subject, html);
+      emailSuccess = true;
       logger.info('Email failure notification sent', { 
-        email: transaction.confirmation_contact,
+        email: user.email,
+        transactionId: transaction.payment_reference
+      });
+    } catch (emailError) {
+      logger.error('Email failure notification failed', { 
+        error: emailError.message,
+        email: user.email,
         transactionId: transaction.payment_reference
       });
     }
+    
+    // Log overall success
+    if (smsSuccess || emailSuccess) {
+      logger.info('At least one failure notification method succeeded', {
+        smsSuccess,
+        emailSuccess,
+        transactionId: transaction.payment_reference
+      });
+    } else {
+      logger.warn('All failure notification methods failed', {
+        transactionId: transaction.payment_reference
+      });
+    }
+    
   } catch (error) {
-    logger.error('Error sending failure notification', { 
+    logger.error('Error sending failure notifications', { 
       error: error.message,
       transactionId: transaction.payment_reference
     });

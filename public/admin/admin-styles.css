@@ -28,6 +28,7 @@ h2 {
   padding: 15px 30px;
   color: white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 .logo {
@@ -52,10 +53,13 @@ h2 {
   display: flex;
   align-items: center;
   transition: opacity 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 6px;
 }
 
 .nav-links li a:hover {
   opacity: 0.8;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .nav-links i {
@@ -65,6 +69,23 @@ h2 {
 .auth-links {
   display: flex;
   align-items: center;
+}
+
+/* Mobile Menu Toggle for Admin */
+.admin-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.admin-mobile-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* General Buttons */
@@ -153,6 +174,21 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box; /* Important */
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  outline: none;
+  pointer-events: auto;
+  user-select: text;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 /* Tables */
@@ -213,11 +249,10 @@ tbody tr:hover {
 .modal {
   display: none; /* Hidden by default */
   position: fixed;
-  z-index: 1000;
+  z-index: 1500;
   left: 0; top: 0;
   width: 100%; height: 100%;
   background-color: rgba(0,0,0,0.5);
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -230,6 +265,8 @@ tbody tr:hover {
   min-width: 300px;
   max-width: 450px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1501;
+  pointer-events: auto;
 }
 
 .close {
@@ -242,12 +279,115 @@ tbody tr:hover {
 
 .close:hover { color: #333; }
 
-/* Responsive Navbar */
+/* Responsive Admin Navbar */
 @media (max-width: 768px) {
-  .nav-links {
-    display: none; /* Hide on mobile, can be toggled with JS */
-  }
   .navbar {
     padding: 15px 20px;
+    flex-wrap: wrap;
+  }
+  
+  .logo {
+    font-size: 20px;
+  }
+  
+  .admin-mobile-toggle {
+    display: block;
+  }
+  
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #007bff;
+    flex-direction: column;
+    gap: 0;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+  
+  .nav-links.show {
+    display: flex;
+  }
+  
+  .nav-links li {
+    width: 100%;
+  }
+  
+  .nav-links li a {
+    width: 100%;
+    padding: 15px 12px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .nav-links li a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px);
+  }
+  
+  .auth-links {
+    margin-top: 10px;
+  }
+  
+  .btn-logout {
+    padding: 10px 15px;
+    font-size: 14px;
   }
 }
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 15px;
+  }
+  
+  .logo {
+    font-size: 18px;
+  }
+  
+  .nav-links {
+    padding: 15px;
+  }
+  
+  .nav-links li a {
+    padding: 12px 10px;
+    font-size: 14px;
+  }
+  
+  .btn-logout {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+/* Admin Mobile Menu Toggle JavaScript Function */
+function toggleAdminMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  if (navLinks) {
+    navLinks.classList.toggle('show');
+  }
+}
+
+// Close admin menu when clicking outside
+document.addEventListener('click', function(event) {
+  const navbar = document.querySelector('.navbar');
+  const mobileToggle = document.querySelector('.admin-mobile-toggle');
+  const isClickInsideNavbar = navbar && navbar.contains(event.target);
+  const isClickOnToggle = mobileToggle && mobileToggle.contains(event.target);
+  
+  if (!isClickInsideNavbar && !isClickOnToggle) {
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) navLinks.classList.remove('show');
+  }
+});
+
+// Close admin menu when window is resized to desktop
+window.addEventListener('resize', function() {
+  if (window.innerWidth > 768) {
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) navLinks.classList.remove('show');
+  }
+});

@@ -9,72 +9,461 @@
   <meta name="robots" content="index, follow">
   <title>Telecel Data Plans - DataWaves | Buy Telecel Mobile Data</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
-  <!-- Navbar -->
+<body class="telecel-page">
+  <!-- Modern Navbar -->
   <nav class="navbar">
-    <div class="logo"><a href="index.html">DataWaves</a></div>
-    <ul class="nav-links">
-      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
-      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
-      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
-    </ul>
-    <div class="auth-links">
-      <!-- User info will be displayed here after login -->
-      <div id="user-info" style="display: none;">
-        <a href="account.html" class="btn-dashboard" id="user-button" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;"></a>
-        | <a href="#" onclick="logout()" class="btn-logout">Logout</a>
-      </div>
-      <!-- Default auth links for logged out users -->
-      <div id="auth-links-default">
-        <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
-       |<a href="account.html" class="btn-dashboard">Account</a> 
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">DW</div>
+        <div class="brand-text">DataWaves</div>
+      </a>
+      
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="mtn.html" class="nav-link">
+            <img src="images/mtn.png" alt="MTN">
+            <span class="nav-tooltip">MTN Ghana</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="telecel.html" class="nav-link">
+            <img src="images/telecel.png" alt="Telecel">
+            <span class="nav-tooltip">Telecel Ghana</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="at.html" class="nav-link">
+            <img src="images/airteltigo.png" alt="AirtelTigo">
+            <span class="nav-tooltip">AirtelTigo Ghana</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="navbar-actions">
+        <!-- User info will be displayed here after login -->
+        <div id="user-info" class="user-menu" style="display: none;">
+          <a href="account.html" class="user-button" id="user-button">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <span id="user-name">Account</span>
+          </a>
+          <a href="#" onclick="logout()" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </a>
+        </div>
+        
+        <!-- Default auth links for logged out users -->
+        <div id="auth-links-default" class="auth-buttons">
+          <a href="login.html" class="auth-btn login">
+            <i class="fas fa-sign-in-alt"></i>
+            Login
+          </a>
+          <a href="register.html" class="auth-btn register">
+            <i class="fas fa-user-plus"></i>
+            Register
+          </a>
+          <a href="account.html" class="auth-btn account">
+            <i class="fas fa-user"></i>
+            Account
+          </a>
+        </div>
+        
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
     </div>
   </nav>
 
-  <!-- Centered Header -->
-  <header class="centered-header">
-    <h1>Telecel Data Plans</h1>
-    <p>Fast, easy, and affordable Telecel mobile data bundles.</p>
-  </header>
-
-  <!-- Telecel Plans Section -->
-  <section class="container">
-    <h2 style="color:#e60012;"><img src="images/telecel.png" alt="Telecel" style="width: 80px;"> Telecel Data Plans</h2>
-    
-    <div class="plans-list">
-      <div class="plan"><h4>3GB</h4><p><strong>Price:</strong> GHC 12</p></div>
-      <div class="plan"><h4>5GB</h4><p><strong>Price:</strong> GHC 18</p></div>
-      <div class="plan"><h4>10GB</h4><p><strong>Price:</strong> GHC 28</p></div>
-      <div class="plan"><h4>15GB</h4><p><strong>Price:</strong> GHC 38</p></div>
-      <div class="plan"><h4>23GB</h4><p><strong>Price:</strong> GHC 58</p></div>
-      <div class="plan"><h4>35GB</h4><p><strong>Price:</strong> GHC 65</p></div>
-      <div class="plan"><h4>45GB</h4><p><strong>Price:</strong> GHC 80</p></div>
-      <div class="plan"><h4>53GB</h4><p><strong>Price:</strong> GHC 100</p></div>
-      <div class="plan"><h4>65GB</h4><p><strong>Price:</strong> GHC 120</p></div>
-      <div class="plan"><h4>73GB</h4><p><strong>Price:</strong> GHC 130</p></div>
-      <div class="plan"><h4>82GB</h4><p><strong>Price:</strong> GHC 140</p></div>
-      <div class="plan"><h4>90GB</h4><p><strong>Price:</strong> GHC 160</p></div>
-      <div class="plan"><h4>100GB</h4><p><strong>Price:</strong> GHC 172</p></div>
-      <div class="plan"><h4>105GB</h4><p><strong>Price:</strong> GHC 180</p></div>
-      <div class="plan"><h4>110GB</h4><p><strong>Price:</strong> GHC 195</p></div>
-      <div class="plan"><h4>115GB</h4><p><strong>Price:</strong> GHC 205</p></div>
-      <div class="plan"><h4>120GB</h4><p><strong>Price:</strong> GHC 228</p></div>
-      <div class="plan"><h4>125GB</h4><p><strong>Price:</strong> GHC 238</p></div>
-      <div class="plan"><h4>130GB</h4><p><strong>Price:</strong> GHC 258</p></div>
-      <div class="plan"><h4>135GB</h4><p><strong>Price:</strong> GHC 265</p></div>
-      <div class="plan"><h4>150GB</h4><p><strong>Price:</strong> GHC 280</p></div>
-      <div class="plan"><h4>160GB</h4><p><strong>Price:</strong> GHC 290</p></div>
-      <div class="plan"><h4>170GB</h4><p><strong>Price:</strong> GHC 300</p></div>
-      <div class="plan"><h4>175GB</h4><p><strong>Price:</strong> GHC 310</p></div>
-      <div class="plan"><h4>185GB</h4><p><strong>Price:</strong> GHC 325</p></div>
-      <div class="plan"><h4>200GB</h4><p><strong>Price:</strong> GHC 350</p></div>
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    <!-- Network Hero Section -->
+  <section class="network-hero telecel-gradient">
+    <div class="container">
+      <div class="network-hero-content">
+        <div class="network-info">
+          <img src="images/telecel.png" alt="Telecel Ghana" class="network-logo">
+          <div class="network-details">
+            <h1>Telecel Ghana Data Plans</h1>
+            <p>Experience fast and affordable mobile data with Telecel Ghana. Enjoy reliable connectivity and instant data delivery across the country.</p>
+            <div class="network-features">
+              <div class="feature-item">
+                <i class="fas fa-wifi"></i>
+                <span>Fast Internet</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Affordable Rates</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-clock"></i>
+                <span>Instant Delivery</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-action">
+          <a href="buy-plan.html?network=telecel" class="hero-cta-btn">
+            <i class="fas fa-shopping-cart"></i>
+            Buy Telecel Data Now
+          </a>
+        </div>
+      </div>
     </div>
-    
-    <a href="buy-plan.html?network=telecel" class="buy-btn full-width">Buy Telecel DATA</a>
   </section>
 
+  <!-- Plans Section -->
+  <section class="network-plans-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Available Telecel Data Plans</h2>
+        <p>Choose the perfect data bundle for your needs</p>
+      </div>
+      
+      <!-- Loading indicator -->
+      <div id="plansLoading" class="loading-container">
+        <div class="loading-spinner telecel-spinner"></div>
+        <p>Loading Telecel data plans...</p>
+      </div>
+
+      <!-- Plans container -->
+      <div class="modern-plans-grid" id="telecelPlans" style="display: none;">
+        <!-- Telecel plans will be loaded here -->
+      </div>
+
+      <!-- Buy button -->
+      <div class="plans-cta" id="buyButtonContainer" style="display: none;">
+        <a href="buy-plan.html?network=telecel" class="network-buy-btn telecel-btn">
+          <i class="fas fa-shopping-cart"></i>
+          Purchase Telecel Data Bundle
+        </a>
+      </div>
+
+      <!-- Error message -->
+      <div id="plansError" class="error-container" style="display: none;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Unable to Load Plans</h3>
+        <p>We're having trouble loading Telecel data plans. Please try again.</p>
+        <button onclick="location.reload()" class="retry-btn">
+          <i class="fas fa-redo"></i>
+          Retry
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Delivery Details Section -->
+  <section class="delivery-details-section">
+    <div class="container">
+      <div class="section-header">
+        <h2><i class="fas fa-clock"></i> 20-Minute Delivery Details</h2>
+        <p>Fast and reliable data delivery to your Telecel number</p>
+      </div>
+      
+      <div class="delivery-grid">
+        <div class="delivery-card">
+          <div class="delivery-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <h3>Express Delivery</h3>
+          <p>Your Telecel data bundle will be delivered within 20 minutes of successful payment confirmation.</p>
+          <ul>
+            <li>Automated processing system</li>
+            <li>Real-time network integration</li>
+            <li>Instant SMS confirmation</li>
+          </ul>
+        </div>
+        
+        <div class="delivery-card">
+          <div class="delivery-icon">
+            <i class="fas fa-shield-check"></i>
+          </div>
+          <h3>Guaranteed Delivery</h3>
+          <p>We guarantee successful delivery to all active Telecel numbers with our advanced validation system.</p>
+          <ul>
+            <li>Network compatibility check</li>
+            <li>Number validation</li>
+            <li>Delivery confirmation</li>
+          </ul>
+        </div>
+        
+        <div class="delivery-card">
+          <div class="delivery-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3>24/7 Support</h3>
+          <p>Our support team is available round the clock to assist with any delivery issues.</p>
+          <ul>
+            <li>Live chat support</li>
+            <li>Email assistance</li>
+            <li>Phone support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Network Compatibility Section -->
+  <section class="network-compatibility-section">
+    <div class="container">
+      <div class="section-header">
+        <h2><i class="fas fa-network-wired"></i> Telecel Network Compatibility</h2>
+        <p>Supported SIM types and network details</p>
+      </div>
+      
+      <div class="compatibility-content">
+        <div class="compatibility-info">
+          <div class="network-support">
+            <h3><i class="fas fa-check-circle"></i> Supported SIM Types</h3>
+            <div class="support-grid">
+              <div class="support-item supported">
+                <i class="fas fa-check"></i>
+                <span>Regular Telecel Prepaid SIM</span>
+              </div>
+              <div class="support-item supported">
+                <i class="fas fa-check"></i>
+                <span>Regular Telecel Postpaid SIM</span>
+              </div>
+              <div class="support-item supported">
+                <i class="fas fa-check"></i>
+                <span>All Active Telecel Numbers</span>
+              </div>
+              <div class="support-item supported">
+                <i class="fas fa-check"></i>
+                <span>Corporate Telecel Lines</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="delivery-requirements">
+            <h3><i class="fas fa-list-check"></i> Delivery Requirements</h3>
+            <div class="requirements-list">
+              <div class="requirement-item">
+                <i class="fas fa-mobile-alt"></i>
+                <div>
+                  <strong>Valid Telecel Number</strong>
+                  <p>Number must belong to Telecel Ghana network</p>
+                </div>
+              </div>
+              <div class="requirement-item">
+                <i class="fas fa-signal"></i>
+                <div>
+                  <strong>Active Network Status</strong>
+                  <p>SIM must be active and not suspended</p>
+                </div>
+              </div>
+              <div class="requirement-item">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                  <strong>Not Blacklisted</strong>
+                  <p>Number must not be on any restriction list</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="compatibility-note">
+          <div class="note-content">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              <h4>Important Note</h4>
+              <p>Our system validates only essential delivery requirements. We do not restrict based on SIM types like Merchant, EVD, Turbonet, Broadband, or Roaming SIMs. All active Telecel numbers are supported for data delivery.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-brand">
+            <div class="brand-icon">DW</div>
+            <div class="brand-info">
+              <h3>DataWaves</h3>
+              <p>Your trusted mobile data provider in Ghana</p>
+            </div>
+          </div>
+          <div class="footer-description">
+            <p>Fast, reliable, and affordable mobile data bundles for MTN, Telecel, and AirtelTigo networks. Experience seamless connectivity with our 20-minute delivery guarantee.</p>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Networks</h4>
+          <ul class="footer-links">
+            <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" class="footer-network-icon"> MTN Ghana</a></li>
+            <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" class="footer-network-icon"> Telecel Ghana</a></li>
+            <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" class="footer-network-icon"> AirtelTigo Ghana</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Services</h4>
+          <ul class="footer-links">
+            <li><a href="buy-plan.html">Buy Data Plans</a></li>
+            <li><a href="dashboard.html">Account Dashboard</a></li>
+            <li><a href="receipt.html">Transaction History</a></li>
+            <li><a href="account.html">Account Settings</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Delivery Info</h4>
+          <ul class="footer-links">
+            <li><i class="fas fa-clock"></i> 20-Minute Delivery</li>
+            <li><i class="fas fa-shield-check"></i> Guaranteed Delivery</li>
+            <li><i class="fas fa-sms"></i> SMS Notifications</li>
+            <li><i class="fas fa-envelope"></i> Email Receipts</li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:support@datawaves.com"><i class="fas fa-envelope"></i> support@datawaves.com</a></li>
+            <li><a href="tel:+233123456789"><i class="fas fa-phone"></i> +233 123 456 789</a></li>
+            <li><i class="fas fa-clock"></i> 24/7 Customer Support</li>
+            <li><i class="fas fa-headset"></i> Live Chat Available</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="footer-bottom-content">
+          <p>&copy; 2026 DataWaves Ghana. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   <script src="script.js"></script>
+  <script>
+    // Load Telecel plans from database
+    document.addEventListener('DOMContentLoaded', function() {
+      loadTelecelPlans();
+      checkAuthStatus();
+    });
+
+    async function loadTelecelPlans() {
+      try {
+        const response = await fetch('/api/plans?provider=telecel');
+        if (!response.ok) {
+          throw new Error('Failed to fetch Telecel plans');
+        }
+        
+        const plans = await response.json();
+        const plansContainer = document.getElementById('telecelPlans');
+        
+        if (plans && plans.length > 0) {
+          plansContainer.innerHTML = '';
+          
+          plans.forEach(plan => {
+            const planElement = document.createElement('div');
+            planElement.className = 'modern-plan-card';
+            planElement.innerHTML = `
+              <div class="plan-header">
+                <div class="plan-size">${plan.size}<span>GB</span></div>
+                <div class="plan-price">GHC ${parseFloat(plan.customer_price || plan.price).toFixed(2)}</div>
+              </div>
+              <div class="plan-details">
+                <div class="plan-features">
+                  <div class="feature"><i class="fas fa-check"></i> Instant activation</div>
+                  <div class="feature"><i class="fas fa-check"></i> No expiry rollover</div>
+                </div>
+              </div>
+            `;
+            plansContainer.appendChild(planElement);
+          });
+          
+          // Hide loading and show plans
+          document.getElementById('plansLoading').style.display = 'none';
+          document.getElementById('telecelPlans').style.display = 'grid';
+          document.getElementById('buyButtonContainer').style.display = 'block';
+        } else {
+          throw new Error('No Telecel plans available');
+        }
+        
+      } catch (error) {
+        console.error('Error loading Telecel plans:', error);
+        document.getElementById('plansLoading').style.display = 'none';
+        document.getElementById('plansError').style.display = 'block';
+      }
+    }
+
+    // Check authentication status
+    function checkAuthStatus() {
+      fetch('/api/user')
+        .then(res => res.json())
+        .then(user => {
+          if (!user.error) {
+            // Show user info
+            if (document.getElementById('user-info')) {
+              document.getElementById('user-info').style.display = 'flex';
+            }
+            if (document.getElementById('auth-links-default')) {
+              document.getElementById('auth-links-default').style.display = 'none';
+            }
+            if (document.getElementById('user-name')) {
+              document.getElementById('user-name').textContent = user.full_name || 'Account';
+            }
+            if (document.getElementById('user-avatar')) {
+              const avatar = document.getElementById('user-avatar');
+              avatar.textContent = (user.full_name || 'User').charAt(0).toUpperCase();
+            }
+          }
+        })
+        .catch(err => {
+          console.error('Error checking auth status:', err);
+        });
+    }
+
+    // Logout function
+    function logout() {
+      fetch('/api/logout', { method: 'POST' })
+        .then(res => res.json())
+        .then(response => {
+          if (response.success) {
+            window.location.href = "index.html";
+          }
+        })
+        .catch(err => {
+          console.error('Logout error:', err);
+          window.location.href = "index.html";
+        });
+    }
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const navbarNav = document.querySelector('.navbar-nav');
+      const authButtons = document.querySelector('#auth-links-default');
+      navbarNav.classList.toggle('show');
+      if (authButtons) {
+        authButtons.classList.toggle('show');
+      }
+    }
+
+    // Add CSS for loading spinner
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>

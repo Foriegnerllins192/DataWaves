@@ -1,0 +1,24 @@
+{"timestamp":"2026-01-27T09:27:13.647Z","level":"info","message":"SMS Phone API service initialized successfully","metadata":{}}
+{"timestamp":"2026-01-27T10:08:56.320Z","level":"info","message":"SMS Phone API service initialized successfully","metadata":{}}
+{"timestamp":"2026-01-27T10:10:07.065Z","level":"info","message":"SMS Phone API service initialized successfully","metadata":{}}
+{"timestamp":"2026-01-27T10:38:50.025Z","level":"info","message":"SMS Phone API service initialized successfully","metadata":{}}
+{"timestamp":"2026-01-27T10:45:50.264Z","level":"info","message":"Phone validation request","metadata":{"phoneNumber":"******3350","network":"mtn","ip":"::1"}}
+{"timestamp":"2026-01-27T10:45:50.323Z","level":"info","message":"Validating phone number for mtn network","metadata":{"phoneNumber":"0596123350"}}
+{"timestamp":"2026-01-27T10:45:50.325Z","level":"info","message":"Checking if +233596123350 is active on mtn","metadata":{}}
+{"timestamp":"2026-01-27T10:45:50.326Z","level":"info","message":"Checking if +233596123350 is blacklisted on mtn","metadata":{}}
+{"timestamp":"2026-01-27T10:45:50.327Z","level":"info","message":"Skipping SIM type validations for mtn data purchase","metadata":{"skipped":["merchant","evd","turbonet","broadband","roaming"]}}
+{"timestamp":"2026-01-27T10:45:50.329Z","level":"info","message":"Phone validation result","metadata":{"valid":true,"network":"mtn","code":"SUCCESS","ip":"::1"}}
+{"timestamp":"2026-01-27T10:45:50.597Z","level":"info","message":"Phone validation request","metadata":{"phoneNumber":"******3350","network":"mtn","ip":"::1"}}
+{"timestamp":"2026-01-27T10:45:50.598Z","level":"info","message":"Validating phone number for mtn network","metadata":{"phoneNumber":"0596123350"}}
+{"timestamp":"2026-01-27T10:45:50.599Z","level":"info","message":"Checking if +233596123350 is active on mtn","metadata":{}}
+{"timestamp":"2026-01-27T10:45:50.600Z","level":"info","message":"Checking if +233596123350 is blacklisted on mtn","metadata":{}}
+{"timestamp":"2026-01-27T10:45:50.601Z","level":"info","message":"Skipping SIM type validations for mtn data purchase","metadata":{"skipped":["merchant","evd","turbonet","broadband","roaming"]}}
+{"timestamp":"2026-01-27T10:45:50.602Z","level":"info","message":"Phone validation result","metadata":{"valid":true,"network":"mtn","code":"SUCCESS","ip":"::1"}}
+{"timestamp":"2026-01-27T10:46:00.735Z","level":"info","message":"Payment initialization started","metadata":{"userId":4,"planId":"1","phoneNumber":"+233596123350","paymentMethod":"paystack","confirmationMethod":"both"}}
+{"timestamp":"2026-01-27T10:46:01.148Z","level":"info","message":"Starting network-specific phone validation","metadata":{"phoneNumber":"+233596123350","network":"mtn","userId":4}}
+{"timestamp":"2026-01-27T10:46:01.149Z","level":"info","message":"Validating phone number for mtn network","metadata":{"phoneNumber":"+233596123350"}}
+{"timestamp":"2026-01-27T10:46:01.150Z","level":"warn","message":"Phone validation failed","metadata":{"phoneNumber":"+233596123350","network":"mtn","error":"Invalid Ghana phone number format. Please use formats like 024XXXXXXX or +23324XXXXXXX","code":"INVALID_FORMAT","userId":4}}
+{"timestamp":"2026-01-27T10:46:33.518Z","level":"info","message":"Payment initialization started","metadata":{"userId":4,"planId":"1","phoneNumber":"+233596123350","paymentMethod":"paystack","confirmationMethod":"both"}}
+{"timestamp":"2026-01-27T10:46:35.216Z","level":"info","message":"Starting network-specific phone validation","metadata":{"phoneNumber":"+233596123350","network":"mtn","userId":4}}
+{"timestamp":"2026-01-27T10:46:35.217Z","level":"info","message":"Validating phone number for mtn network","metadata":{"phoneNumber":"+233596123350"}}
+{"timestamp":"2026-01-27T10:46:35.219Z","level":"warn","message":"Phone validation failed","metadata":{"phoneNumber":"+233596123350","network":"mtn","error":"Invalid Ghana phone number format. Please use formats like 024XXXXXXX or +23324XXXXXXX","code":"INVALID_FORMAT","userId":4}}

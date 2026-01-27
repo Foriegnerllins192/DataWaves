@@ -11,326 +11,689 @@
   <link rel="stylesheet" href="style.css" />
   <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .selected-plan {
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .selected-plan h3 {
-      margin-top: 0;
-      color: #333;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 10px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #555;
-    }
-    .form-group select, .form-group input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    .btn {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      width: 100%;
-    }
-    .btn-primary {
-      background-color: #007bff;
-      color: white;
-    }
-    .btn-primary:hover {
-      background-color: #0069d9;
-    }
-    .alert {
-      padding: 12px;
-      border-radius: 4px;
-      margin-bottom: 20px;
-    }
-    .alert.error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
-    .alert.success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-    .loading {
-      display: none;
-      text-align: center;
-      padding: 20px;
-    }
-    .spinner {
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-left-color: #007bff;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 10px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
 </head>
 <body>
-  <!-- Navbar -->
+  <!-- Modern Navbar -->
   <nav class="navbar">
-    <div class="logo"><a href="index.html">DataWaves</a></div>
-    <ul class="nav-links">
-      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
-      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
-      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
-    </ul>
-    <div class="auth-links">
-      <!-- User info will be displayed here after login -->
-      <div id="user-info" style="display: none;">
-        <a href="account.html" class="btn-dashboard" id="user-button" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;"></a>
-        | <a href="#" onclick="logout()" class="btn-logout">Logout</a>
-      </div>
-      <!-- Default auth links for logged out users -->
-      <div id="auth-links-default">
-        <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
-       |<a href="account.html" class="btn-dashboard">Account</a> 
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">DW</div>
+        <div class="brand-text">DataWaves</div>
+      </a>
+      
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="mtn.html" class="nav-link">
+            <img src="images/mtn.png" alt="MTN">
+            <span class="nav-tooltip">MTN Ghana</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="telecel.html" class="nav-link">
+            <img src="images/telecel.png" alt="Telecel">
+            <span class="nav-tooltip">Telecel Ghana</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="at.html" class="nav-link">
+            <img src="images/airteltigo.png" alt="AirtelTigo">
+            <span class="nav-tooltip">AirtelTigo Ghana</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="navbar-actions">
+        <!-- User info will be displayed here after login -->
+        <div id="user-info" class="user-menu" style="display: none;">
+          <a href="account.html" class="user-button" id="user-button">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <span id="user-name">Account</span>
+          </a>
+          <a href="#" onclick="logout()" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </a>
+        </div>
+        
+        <!-- Default auth links for logged out users -->
+        <div id="auth-links-default" class="auth-buttons">
+          <a href="login.html" class="auth-btn login">
+            <i class="fas fa-sign-in-alt"></i>
+            Login
+          </a>
+          <a href="register.html" class="auth-btn register">
+            <i class="fas fa-user-plus"></i>
+            Register
+          </a>
+          <a href="account.html" class="auth-btn account">
+            <i class="fas fa-user"></i>
+            Account
+          </a>
+        </div>
+        
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
     </div>
   </nav>
 
-  <!-- Buy Plan Form -->
-  <section class="container">
-    <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Back to Home</a>
-    <h2>Buy Data Plan</h2>
-    
-    <div class="selected-plan">
-      <h3><i class="fas fa-shopping-cart"></i> Selected Plan</h3>
-      <p><strong>Network:</strong> <span id="selectedPlanNetwork">None</span></p>
-      <p><strong>Plan:</strong> <span id="selectedPlanName">None</span></p>
-      <p><strong>Price:</strong> <span id="selectedPlanPrice">GHC 0.00</span></p>
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    <!-- Buy Plan Section -->
+  <div class="buy-plan-wrapper">
+    <div class="container">
+      <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+
+      <!-- Page Header -->
+      <div class="buy-plan-header">
+        <div class="header-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <h1>Buy Data Plan</h1>
+        <p>Choose your network, select a plan, and get instant data delivery</p>
+      </div>
+
+      <!-- Alert Messages -->
+      <div id="alert" class="alert-message" style="display: none;"></div>
+
+      <!-- Step 1: Network Selection -->
+      <div class="step-section">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <h2>Choose Your Network</h2>
+        </div>
+        
+        <div class="network-selection-grid">
+          <!-- MTN Card -->
+          <div class="network-selection-card mtn" data-network="mtn">
+            <div class="network-card-header">
+              <img src="images/mtn.png" alt="MTN Ghana" class="network-logo">
+              <div class="network-hover-icon">
+                <i class="fas fa-signal"></i>
+              </div>
+            </div>
+            <div class="network-info">
+              <h3>MTN Ghana</h3>
+              <p>Fast and reliable network coverage across Ghana</p>
+            </div>
+            <button class="network-select-btn">
+              <i class="fas fa-signal"></i>
+              <span>Select MTN</span>
+            </button>
+          </div>
+
+          <!-- Telecel Card -->
+          <div class="network-selection-card telecel" data-network="telecel">
+            <div class="network-card-header">
+              <img src="images/telecel.png" alt="Telecel Ghana" class="network-logo">
+              <div class="network-hover-icon">
+                <i class="fas fa-signal"></i>
+              </div>
+            </div>
+            <div class="network-info">
+              <h3>Telecel Ghana</h3>
+              <p>Affordable data plans with excellent coverage</p>
+            </div>
+            <button class="network-select-btn">
+              <i class="fas fa-signal"></i>
+              <span>Select Telecel</span>
+            </button>
+          </div>
+
+          <!-- AirtelTigo Card -->
+          <div class="network-selection-card airteltigo" data-network="airteltigo">
+            <div class="network-card-header">
+              <img src="images/airteltigo.png" alt="AirtelTigo Ghana" class="network-logo">
+              <div class="network-hover-icon">
+                <i class="fas fa-signal"></i>
+              </div>
+            </div>
+            <div class="network-info">
+              <h3>AirtelTigo Ghana</h3>
+              <p>Great value data bundles for everyone</p>
+            </div>
+            <button class="network-select-btn">
+              <i class="fas fa-signal"></i>
+              <span>Select AirtelTigo</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Plan Selection -->
+      <div class="step-section" id="planSelectionStep" style="display: none;">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <h2>Select Data Plan</h2>
+          <p>Available plans for <span id="selectedNetworkName">Network</span></p>
+        </div>
+        
+        <div class="plan-selection-container">
+          <div id="plansLoading" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading available plans...</p>
+          </div>
+          
+          <div class="plans-selection-grid" id="plansGrid" style="display: none;">
+            <!-- Plans will be loaded here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Purchase Form -->
+      <div class="step-section" id="purchaseStep" style="display: none;">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <h2>Complete Purchase</h2>
+          <p>Enter phone number and proceed to payment</p>
+        </div>
+        
+        <div class="purchase-form-container">
+          <div class="purchase-summary">
+            <h3><i class="fas fa-receipt"></i> Order Summary</h3>
+            <div class="summary-details">
+              <div class="summary-row">
+                <span>Network:</span>
+                <span id="summaryNetwork">-</span>
+              </div>
+              <div class="summary-row">
+                <span>Data Plan:</span>
+                <span id="summaryPlan">-</span>
+              </div>
+              <div class="summary-row total">
+                <span>Total Amount:</span>
+                <span id="summaryPrice">GHC 0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <form id="buyPlanForm" class="purchase-form">
+            <div class="form-group">
+              <label for="phone_number">
+                <i class="fas fa-phone"></i> Phone Number
+              </label>
+              <input 
+                type="tel" 
+                id="phone_number" 
+                name="phone_number" 
+                placeholder="Enter phone number (e.g., 024XXXXXXX)" 
+                required 
+              />
+              <div class="input-help">
+                <small>Enter the phone number to receive the data bundle</small>
+              </div>
+            </div>
+
+            <button type="submit" class="purchase-btn">
+              <span>Continue to Payment</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="processingLoading" class="loading-container" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Processing your request...</p>
+      </div>
     </div>
+  </div>
+  </main>
 
-    <form id="buyPlanForm">
-      <div class="form-group">
-        <label for="network"><i class="fas fa-network-wired"></i> Select Network:</label>
-        <select id="network" name="network" required>
-          <option value="">-- Select Network --</option>
-          <option value="mtn">MTN</option>
-          <option value="telecel">Telecel</option>
-          <option value="airteltigo">AirtelTigo</option>
-        </select>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Company Info -->
+        <div class="footer-section">
+          <div class="footer-brand">
+            <div class="brand-icon">DW</div>
+            <div class="brand-text">DataWaves</div>
+          </div>
+          <p class="footer-description">
+            Fast, reliable, and secure mobile data delivery for all networks in Ghana.
+          </p>
+          <div class="footer-stats">
+            <div class="footer-stat">
+              <i class="fas fa-clock"></i>
+              <span>15-20 Min Delivery</span>
+            </div>
+            <div class="footer-stat">
+              <i class="fas fa-shield-alt"></i>
+              <span>100% Secure</span>
+            </div>
+            <div class="footer-stat">
+              <i class="fas fa-headset"></i>
+              <span>24/7 Support</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Purchase -->
+        <div class="footer-section">
+          <h3>Quick Purchase</h3>
+          <ul class="footer-links">
+            <li><a href="buy-plan.html?network=mtn"><i class="fas fa-shopping-cart"></i> Buy MTN Data</a></li>
+            <li><a href="buy-plan.html?network=telecel"><i class="fas fa-shopping-cart"></i> Buy Telecel Data</a></li>
+            <li><a href="buy-plan.html?network=airteltigo"><i class="fas fa-shopping-cart"></i> Buy AirtelTigo Data</a></li>
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> My Dashboard</a></li>
+          </ul>
+        </div>
+
+        <!-- Support -->
+        <div class="footer-section">
+          <h3>Support</h3>
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>+233 20 849 4123</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>support@datawaves.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-clock"></i>
+              <span>24/7 Customer Support</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Important Info -->
+        <div class="footer-section">
+          <h3>Important Info</h3>
+          <div class="important-notes">
+            <div class="note-item">
+              <i class="fas fa-check-circle text-success"></i>
+              <span>All SIM types supported</span>
+            </div>
+            <div class="note-item">
+              <i class="fas fa-shield-alt text-primary"></i>
+              <span>Secure Paystack payments</span>
+            </div>
+            <div class="note-item">
+              <i class="fas fa-redo text-warning"></i>
+              <span>Auto refund on failure</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="plan"><i class="fas fa-sim-card"></i> Select Data Plan:</label>
-        <select id="plan" name="plan" required>
-          <option value="">-- Select a network first --</option>
-        </select>
+      <div class="footer-bottom">
+        <div class="footer-bottom-content">
+          <div class="footer-left">
+            <p>&copy; 2026 DataWaves. All rights reserved.</p>
+          </div>
+          <div class="footer-right">
+            <div class="payment-methods">
+              <span>Secured by:</span>
+              <img src="https://paystack.com/assets/img/logo/paystack-logo-blue.svg" alt="Paystack" class="payment-logo">
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="phone_number"><i class="fas fa-phone"></i> Phone Number:</label>
-        <input type="tel" id="phone_number" name="phone_number" placeholder="Enter phone number (e.g., 024XXXXXXX)" required />
-        <small>Enter the phone number to receive the data bundle</small>
-      </div>
-
-      <button type="submit" class="btn btn-primary">
-        <i class="fas fa-arrow-right"></i> Continue to Payment
-      </button>
-    </form>
-
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-      <p>Processing your request...</p>
     </div>
-
-    <div id="alert" class="alert" style="display: none;"></div>
-  </section>
+  </footer>
 
   <script>
-    // Handle network selection
-    document.getElementById('network').addEventListener('change', function() {
-      const network = this.value;
-      const planSelect = document.getElementById('plan');
-      const networkDisplay = document.getElementById('selectedPlanNetwork');
-      
-      // Update selected network display
-      networkDisplay.textContent = network ? network.toUpperCase() : 'None';
-      
-      // Clear existing options
-      planSelect.innerHTML = '<option value="">Loading plans...</option>';
-      
-      if (network) {
-        // Fetch plans for selected network
-        fetch(`/api/plans?provider=${network}`)
-          .then(res => res.json())
-          .then(plans => {
-            if (plans.length > 0) {
-              planSelect.innerHTML = '<option value="">-- Select a plan --</option>';
-              plans.forEach(plan => {
-                const option = document.createElement('option');
-                option.value = plan.id;
-                option.textContent = `${plan.size}GB - GHC ${plan.customer_price || plan.price}`;
-                option.dataset.price = plan.customer_price || plan.price;
-                option.dataset.size = plan.size;
-                option.dataset.provider = plan.provider;
-                planSelect.appendChild(option);
-              });
-            } else {
-              planSelect.innerHTML = '<option value="">No plans available</option>';
-            }
-          })
-          .catch(err => {
-            console.error('Error fetching plans:', err);
-            planSelect.innerHTML = '<option value="">Error loading plans</option>';
-            showAlert('Error loading plans. Please try again.', 'error');
-          });
-      } else {
-        planSelect.innerHTML = '<option value="">-- Select a network first --</option>';
-        updateSelectedPlanDisplay();
-      }
+    let selectedNetwork = null;
+    let selectedPlan = null;
+    let availablePlans = [];
+
+    // Network selection handler
+    document.querySelectorAll('.network-selection-card').forEach(card => {
+      card.addEventListener('click', function() {
+        const network = this.dataset.network;
+        selectNetwork(network);
+      });
     });
 
-    // Handle plan selection
-    document.getElementById('plan').addEventListener('change', function() {
-      updateSelectedPlanDisplay();
-    });
-
-    // Update selected plan display
-    function updateSelectedPlanDisplay() {
-      const planSelect = document.getElementById('plan');
-      const selectedOption = planSelect.selectedOptions[0];
-      const planNameDisplay = document.getElementById('selectedPlanName');
-      const planPriceDisplay = document.getElementById('selectedPlanPrice');
+    function selectNetwork(network) {
+      selectedNetwork = network;
       
-      if (selectedOption && selectedOption.value) {
-        planNameDisplay.textContent = selectedOption.dataset.size + 'GB';
-        planPriceDisplay.textContent = 'GHC ' + selectedOption.dataset.price;
-      } else {
-        planNameDisplay.textContent = 'None';
-        planPriceDisplay.textContent = 'GHC 0.00';
-      }
+      // Update UI
+      document.querySelectorAll('.network-selection-card').forEach(card => {
+        card.classList.remove('selected');
+        const btn = card.querySelector('.network-select-btn');
+        const span = btn.querySelector('span');
+        const icon = btn.querySelector('i');
+        
+        icon.className = 'fas fa-signal';
+        span.textContent = `Select ${card.dataset.network.charAt(0).toUpperCase() + card.dataset.network.slice(1)}`;
+      });
+      
+      const selectedCard = document.querySelector(`[data-network="${network}"]`);
+      selectedCard.classList.add('selected');
+      const selectedBtn = selectedCard.querySelector('.network-select-btn');
+      const selectedSpan = selectedBtn.querySelector('span');
+      const selectedIcon = selectedBtn.querySelector('i');
+      
+      selectedIcon.className = 'fas fa-check';
+      selectedSpan.textContent = `${network.charAt(0).toUpperCase() + network.slice(1)} Selected`;
+      
+      // Load plans
+      loadPlans(network);
     }
 
-    // Show alert message
+    function loadPlans(network) {
+      const planStep = document.getElementById('planSelectionStep');
+      const plansGrid = document.getElementById('plansGrid');
+      const plansLoading = document.getElementById('plansLoading');
+      const networkName = document.getElementById('selectedNetworkName');
+      
+      // Show step and loading
+      planStep.style.display = 'block';
+      plansLoading.style.display = 'block';
+      plansGrid.style.display = 'none';
+      networkName.textContent = network.charAt(0).toUpperCase() + network.slice(1);
+      
+      // Scroll to step
+      planStep.scrollIntoView({ behavior: 'smooth' });
+      
+      // Fetch plans
+      fetch(`/api/plans?provider=${network}`)
+        .then(res => res.json())
+        .then(plans => {
+          availablePlans = plans;
+          if (plans.length > 0) {
+            plansGrid.innerHTML = '';
+            plans.forEach(plan => {
+              const planCard = document.createElement('div');
+              planCard.className = 'plan-selection-card';
+              planCard.dataset.planId = plan.id;
+              planCard.innerHTML = `
+                <div class="plan-card-size">${plan.size}<span>GB</span></div>
+                <div class="plan-card-price">GHC ${parseFloat(plan.customer_price || plan.price).toFixed(2)}</div>
+              `;
+              planCard.addEventListener('click', () => selectPlan(plan));
+              plansGrid.appendChild(planCard);
+            });
+            
+            // Hide loading and show plans
+            plansLoading.style.display = 'none';
+            plansGrid.style.display = 'grid';
+          } else {
+            plansLoading.innerHTML = '<p style="text-align: center; color: #666;">No plans available for this network</p>';
+          }
+        })
+        .catch(err => {
+          console.error('Error loading plans:', err);
+          plansLoading.innerHTML = '<p style="text-align: center; color: #dc3545;">Error loading plans. Please try again.</p>';
+          showAlert('Error loading plans. Please try again.', 'error');
+        });
+    }
+
+    function selectPlan(plan) {
+      selectedPlan = plan;
+      
+      // Update plan cards
+      document.querySelectorAll('.plan-selection-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      document.querySelector(`[data-plan-id="${plan.id}"]`).classList.add('selected');
+      
+      // Update summary
+      document.getElementById('summaryNetwork').textContent = selectedNetwork.charAt(0).toUpperCase() + selectedNetwork.slice(1);
+      document.getElementById('summaryPlan').textContent = `${plan.size}GB`;
+      document.getElementById('summaryPrice').textContent = `GHC ${parseFloat(plan.customer_price || plan.price).toFixed(2)}`;
+      
+      // Show purchase form
+      const purchaseStep = document.getElementById('purchaseStep');
+      purchaseStep.style.display = 'block';
+      
+      // Scroll to form
+      purchaseStep.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Form submission with network-specific validation
+    document.getElementById('buyPlanForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const phoneNumber = document.getElementById('phone_number').value;
+      
+      // Basic validation
+      if (!selectedNetwork || !selectedPlan || !phoneNumber) {
+        showAlert('Please complete all steps', 'error');
+        return;
+      }
+      
+      // Show loading
+      document.getElementById('processingLoading').style.display = 'block';
+      document.getElementById('purchaseStep').style.display = 'none';
+      
+      try {
+        // Network-specific phone validation
+        showAlert('Validating phone number...', 'info');
+        
+        const validationResponse = await fetch('/api/validation/phone', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phoneNumber: phoneNumber,
+            network: selectedNetwork
+          })
+        });
+        
+        const validationResult = await validationResponse.json();
+        
+        if (!validationResult.valid) {
+          // Show network-specific error message
+          document.getElementById('processingLoading').style.display = 'none';
+          document.getElementById('purchaseStep').style.display = 'block';
+          
+          let errorMessage = validationResult.error;
+          
+          // Add helpful context for network mismatches
+          if (validationResult.code === 'WRONG_NETWORK' && validationResult.detectedNetwork) {
+            const detectedNetworkName = validationResult.detectedNetwork.charAt(0).toUpperCase() + 
+                                       validationResult.detectedNetwork.slice(1);
+            errorMessage += `. This appears to be a ${detectedNetworkName} number. Please select the correct network or use a ${selectedNetwork.toUpperCase()} number.`;
+          }
+          
+          showAlert(errorMessage, 'error');
+          return;
+        }
+        
+        // Validation successful - proceed to payment
+        showAlert('Phone number validated successfully!', 'success');
+        
+        // Use the validated phone number format
+        const validatedPhoneNumber = validationResult.phoneNumber || phoneNumber;
+        
+        // Redirect to payment with validated data
+        const params = new URLSearchParams({
+          network: selectedNetwork,
+          plan: `${selectedPlan.size}GB`,
+          plan_id: selectedPlan.id,
+          phone: validatedPhoneNumber,
+          price: selectedPlan.customer_price || selectedPlan.price
+        });
+        
+        setTimeout(() => {
+          window.location.href = `payment.html?${params.toString()}`;
+        }, 1000); // Small delay to show success message
+        
+      } catch (error) {
+        console.error('Validation error:', error);
+        
+        // Hide loading and show form
+        document.getElementById('processingLoading').style.display = 'none';
+        document.getElementById('purchaseStep').style.display = 'block';
+        
+        // Fallback to basic validation if API is unavailable
+        const phoneRegex = /^(\+233|0)(20|24|27|26|50|54|55|56|57|59)\d{7}$/;
+        if (!phoneRegex.test(phoneNumber.replace(/\s/g, ''))) {
+          showAlert('Please enter a valid Ghana phone number (e.g., 024XXXXXXX or +23324XXXXXXX)', 'error');
+          return;
+        }
+        
+        showAlert('Phone validation service temporarily unavailable. Proceeding with basic validation.', 'warning');
+        
+        // Proceed to payment with basic validation
+        const params = new URLSearchParams({
+          network: selectedNetwork,
+          plan: `${selectedPlan.size}GB`,
+          plan_id: selectedPlan.id,
+          phone: phoneNumber,
+          price: selectedPlan.customer_price || selectedPlan.price
+        });
+        
+        setTimeout(() => {
+          window.location.href = `payment.html?${params.toString()}`;
+        }, 2000);
+      }
+    });
+
+    // Real-time phone number validation on input
+    document.getElementById('phone_number').addEventListener('input', debounce(async function(e) {
+      const phoneNumber = e.target.value;
+      const inputGroup = e.target.closest('.form-group');
+      
+      // Remove existing validation indicators
+      const existingIndicator = inputGroup.querySelector('.validation-indicator');
+      if (existingIndicator) {
+        existingIndicator.remove();
+      }
+      
+      // Only validate if we have a network selected and a reasonable phone number length
+      if (!selectedNetwork || phoneNumber.length < 8) {
+        return;
+      }
+      
+      try {
+        // Add loading indicator
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'validation-indicator loading';
+        loadingIndicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+        inputGroup.appendChild(loadingIndicator);
+        
+        const response = await fetch('/api/validation/phone', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phoneNumber: phoneNumber,
+            network: selectedNetwork
+          })
+        });
+        
+        const result = await response.json();
+        
+        // Remove loading indicator
+        loadingIndicator.remove();
+        
+        // Add result indicator
+        const resultIndicator = document.createElement('div');
+        resultIndicator.className = `validation-indicator ${result.valid ? 'valid' : 'invalid'}`;
+        
+        if (result.valid) {
+          resultIndicator.innerHTML = `<i class="fas fa-check-circle"></i> Valid ${selectedNetwork.toUpperCase()} number`;
+        } else {
+          resultIndicator.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${result.error}`;
+        }
+        
+        inputGroup.appendChild(resultIndicator);
+        
+      } catch (error) {
+        // Remove loading indicator on error
+        const loadingIndicator = inputGroup.querySelector('.validation-indicator.loading');
+        if (loadingIndicator) {
+          loadingIndicator.remove();
+        }
+      }
+    }, 1000)); // Debounce for 1 second
+
+    // Debounce function to limit API calls
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Utility functions
     function showAlert(message, type) {
       const alertDiv = document.getElementById('alert');
-      alertDiv.textContent = message;
-      alertDiv.className = 'alert ' + type;
+      alertDiv.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : type === 'info' ? 'info-circle' : 'check-circle'}"></i> ${message}`;
+      alertDiv.className = `alert-message ${type}`;
       alertDiv.style.display = 'block';
       
-      // Auto-hide success messages after 5 seconds
-      if (type === 'success') {
+      // Auto-hide success and info messages
+      if (type === 'success' || type === 'info') {
         setTimeout(() => {
           alertDiv.style.display = 'none';
         }, 5000);
       }
+      
+      // Scroll to alert
+      alertDiv.scrollIntoView({ behavior: 'smooth' });
     }
-
-    // Handle form submission
-    document.getElementById('buyPlanForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const network = document.getElementById('network').value;
-      const planId = document.getElementById('plan').value;
-      const phoneNumber = document.getElementById('phone_number').value;
-      const planSelect = document.getElementById('plan');
-      const selectedOption = planSelect.selectedOptions[0];
-      
-      // Validate form
-      if (!network || !planId || !phoneNumber) {
-        showAlert('Please fill in all fields', 'error');
-        return;
-      }
-      
-      // Validate phone number
-      const phoneRegex = /^(\+233|0)(20|24|27|26|23|50|54|55|57|59)\d{7}$/;
-      if (!phoneRegex.test(phoneNumber.replace(/\s/g, ''))) {
-        showAlert('Please enter a valid Ghana phone number (e.g., 024XXXXXXX or +23324XXXXXXX)', 'error');
-        return;
-      }
-      
-      // Show loading indicator
-      document.getElementById('loading').style.display = 'block';
-      document.getElementById('buyPlanForm').style.display = 'none';
-      
-      // Get plan details
-      const planName = selectedOption.dataset.size + 'GB';
-      const price = selectedOption.dataset.price;
-      const provider = selectedOption.dataset.provider;
-      
-      // Redirect to payment page with parameters
-      window.location.href = `payment.html?network=${provider}&plan=${planName}&plan_id=${planId}&phone=${encodeURIComponent(phoneNumber)}&price=${price}`;
-    });
 
     // Logout function
     function logout() {
-      fetch('/api/logout', {
-        method: 'POST'
-      })
-      .then(res => res.json())
-      .then(response => {
-        if (response.success) {
-          window.location.href = "index.html";
-        } else {
-          showAlert("Logout failed: " + (response.error || "Unknown error"), 'error');
-        }
-      })
-      .catch(err => {
-        console.error('Logout error:', err);
-        showAlert('Logout failed. Please try again.', 'error');
-      });
+      fetch('/api/logout', { method: 'POST' })
+        .then(res => res.json())
+        .then(response => {
+          if (response.success) {
+            window.location.href = "index.html";
+          } else {
+            showAlert("Logout failed: " + (response.error || "Unknown error"), 'error');
+          }
+        })
+        .catch(err => {
+          console.error('Logout error:', err);
+          showAlert('Logout failed. Please try again.', 'error');
+        });
     }
 
-    // Check authentication status
+    // Check authentication and handle URL parameters
     document.addEventListener('DOMContentLoaded', function() {
+      // Check authentication
       fetch('/api/user')
         .then(res => res.json())
         .then(user => {
           if (user.error) {
-            // Not logged in, redirect to login
             window.location.href = 'login.html';
             return;
           }
           
           // Show user info
           if (document.getElementById('user-info')) {
-            document.getElementById('user-info').style.display = 'block';
+            document.getElementById('user-info').style.display = 'flex';
           }
           if (document.getElementById('auth-links-default')) {
             document.getElementById('auth-links-default').style.display = 'none';
           }
-          if (document.getElementById('user-button')) {
-            document.getElementById('user-button').textContent = user.full_name || 'User';
+          if (document.getElementById('user-name')) {
+            document.getElementById('user-name').textContent = user.full_name || 'Account';
+          }
+          if (document.getElementById('user-avatar')) {
+            const avatar = document.getElementById('user-avatar');
+            avatar.textContent = (user.full_name || 'User').charAt(0).toUpperCase();
           }
         })
         .catch(err => {
           console.error('Error checking auth status:', err);
         });
+
+      // Handle URL parameters for pre-selection
+      const urlParams = new URLSearchParams(window.location.search);
+      const networkParam = urlParams.get('network');
+      
+      if (networkParam && ['mtn', 'telecel', 'airteltigo'].includes(networkParam)) {
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+          selectNetwork(networkParam);
+        }, 500);
+      }
     });
   </script>
 </body>

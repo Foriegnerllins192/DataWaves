@@ -91,7 +91,7 @@ class AggregatorService {
     }
   }
 
-  // Get available data bundles for an operator (without validity periods)
+  // Get available data bundles for an operator
   async getBundles(operatorId) {
     try {
       const token = await this.getAccessToken();
@@ -106,14 +106,10 @@ class AggregatorService {
         }
       );
 
-      // Remove validity information from bundles since they don't expire
+      // Return bundles as-is from the API
       const bundles = response.data;
       if (bundles && Array.isArray(bundles)) {
-        return bundles.map(bundle => {
-          // Remove validity fields since data doesn't expire
-          const { validity, ...bundleWithoutValidity } = bundle;
-          return bundleWithoutValidity;
-        });
+        return bundles;
       }
 
       return bundles;

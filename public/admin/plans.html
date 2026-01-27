@@ -24,6 +24,9 @@
     </ul>
     <div class="auth-links">
       <a href="#" onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <button class="admin-mobile-toggle" onclick="toggleAdminMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
     </div>
   </nav>
 
@@ -102,11 +105,20 @@
 
     // Modal functions
     function openAddPlanModal() {
-      document.getElementById('addPlanModal').style.display = 'flex';
+      const modal = document.getElementById('addPlanModal');
+      modal.style.display = 'flex';
+      // Focus on the first input field
+      setTimeout(() => {
+        const firstInput = modal.querySelector('select, input');
+        if (firstInput) firstInput.focus();
+      }, 100);
     }
 
     function closeModal() {
-      document.getElementById('addPlanModal').style.display = 'none';
+      const modal = document.getElementById('addPlanModal');
+      modal.style.display = 'none';
+      // Clear any form data
+      document.getElementById('addPlanForm').reset();
     }
 
     // Load plans
@@ -149,7 +161,8 @@
       const planData = {
         provider: formData.get('provider'),
         size: formData.get('size'),
-        price: parseFloat(formData.get('price'))
+        price: parseFloat(formData.get('price')),
+        custom: true  // Admin-created plans are always custom
       };
       
       fetch('/api/admin/plans', {
@@ -202,6 +215,35 @@
     // Load plans when page loads
     document.addEventListener('DOMContentLoaded', function() {
       loadPlans();
+    });
+
+    // Admin Mobile Menu Toggle
+    function toggleAdminMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks) {
+        navLinks.classList.toggle('show');
+      }
+    }
+
+    // Close admin menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const navbar = document.querySelector('.navbar');
+      const mobileToggle = document.querySelector('.admin-mobile-toggle');
+      const isClickInsideNavbar = navbar && navbar.contains(event.target);
+      const isClickOnToggle = mobileToggle && mobileToggle.contains(event.target);
+      
+      if (!isClickInsideNavbar && !isClickOnToggle) {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) navLinks.classList.remove('show');
+      }
+    });
+
+    // Close admin menu when window is resized to desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) navLinks.classList.remove('show');
+      }
     });
 
     // Close modal when clicking outside

@@ -76,16 +76,21 @@ PAYSTACK_SECRET_KEY=sk_test_your_actual_secret_key_here
 PAYSTACK_PUBLIC_KEY=pk_test_your_actual_public_key_here
 ```
 
-### SMS Service (Twilio)
+### SMS Service (SMS Phone API)
 
-Update the Twilio configuration in `.env` with your actual credentials:
+Update the SMS Phone API configuration in `.env` with your actual API key:
 
 ```env
-# Twilio SMS Configuration
-TWILIO_ACCOUNT_SID=your_actual_account_sid
-TWILIO_AUTH_TOKEN=your_actual_auth_token
-TWILIO_PHONE_NUMBER=your_actual_twilio_phone_number
+# SMS Phone API Configuration
+SMS_PHONE_API_KEY=your_actual_sms_phone_api_key
 ```
+
+**To get your SMS Phone API key:**
+1. Visit https://smsphoneapi.com
+2. Create an account or log in
+3. Navigate to your dashboard
+4. Copy your API key
+5. Replace `your_actual_sms_phone_api_key` in the `.env` file
 
 ### Email Service
 
@@ -151,5 +156,5 @@ The database includes default accounts for testing:
 
 1. Customize the data plans in the admin panel
 2. Set up your Paystack account for live payments
-3. Configure your Twilio account for SMS notifications
+3. Configure your SMS Phone API account for SMS notifications
 4. Customize the branding and styling to match your business

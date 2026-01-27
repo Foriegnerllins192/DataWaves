@@ -154,6 +154,9 @@
     </ul>
     <div class="auth-links">
       <a href="#" onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <button class="admin-mobile-toggle" onclick="toggleAdminMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
     </div>
   </nav>
 
@@ -377,6 +380,35 @@
     // Load data when page loads
     document.addEventListener('DOMContentLoaded', function() {
       loadDashboardData();
+    });
+
+    // Admin Mobile Menu Toggle
+    function toggleAdminMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks) {
+        navLinks.classList.toggle('show');
+      }
+    }
+
+    // Close admin menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const navbar = document.querySelector('.navbar');
+      const mobileToggle = document.querySelector('.admin-mobile-toggle');
+      const isClickInsideNavbar = navbar && navbar.contains(event.target);
+      const isClickOnToggle = mobileToggle && mobileToggle.contains(event.target);
+      
+      if (!isClickInsideNavbar && !isClickOnToggle) {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) navLinks.classList.remove('show');
+      }
+    });
+
+    // Close admin menu when window is resized to desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) navLinks.classList.remove('show');
+      }
     });
   </script>
 </body>

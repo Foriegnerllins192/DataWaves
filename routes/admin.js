@@ -8,6 +8,28 @@ const validationService = require('../services/validationService');
 
 const router = express.Router();
 
+// Utility function to safely convert values to boolean (simplified and robust)
+const toBoolean = (value, defaultValue = false) => {
+  if (value === undefined || value === null) {
+    return defaultValue;
+  }
+  
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  
+  if (typeof value === 'string') {
+    const lowerValue = value.toLowerCase().trim();
+    return lowerValue === 'true' || lowerValue === '1' || lowerValue === 'yes';
+  }
+  
+  if (typeof value === 'number') {
+    return value === 1;
+  }
+  
+  return Boolean(value);
+};
+
 // Admin middleware
 const isAdmin = (req, res, next) => {
   if (req.session && req.session.user && req.session.user.role === 'admin') {
@@ -226,7 +248,7 @@ router.get('/plans', isAdmin, async (req, res) => {
 // Add new data plan (for admin)
 router.post('/plans', isAdmin, async (req, res) => {
   try {
-    const { provider, size, price } = req.body;
+    const { provider, size, price, custom } = req.body;
     
     // Validate data plan
     const planData = { provider, size, price };
@@ -238,8 +260,29 @@ router.post('/plans', isAdmin, async (req, res) => {
       });
     }
     
-    const query = 'INSERT INTO data_plans (provider, size, price, custom) VALUES ($1, $2, $3, 1) RETURNING id';
-    const result = await db.query(query, [provider, size, price]);
+    // Normalize custom to proper boolean - no numeric conversions
+    let customValue;
+    
+    // Debug logging
+    console.log('Received custom value:', custom, 'Type:', typeof custom);
+    
+    if (custom === undefined || custom === null) {
+      customValue = true; // Default for admin-created plans
+    } else if (custom === true || custom === false) {
+      customValue = custom; // Already a boolean
+    } else if (custom === 'true' || custom === 'yes') {
+      customValue = true;
+    } else if (custom === 'false' || custom === 'no') {
+      customValue = false;
+    } else {
+      customValue = true; // Default fallback
+    }
+    
+    // Debug log before SQL query
+    console.log('CUSTOM DEBUG:', customValue, typeof customValue);
+    
+    const query = 'INSERT INTO data_plans (provider, size, price, custom) VALUES ($1, $2, $3, $4) RETURNING id';
+    const result = await db.query(query, [provider, size, price, customValue]);
     
     res.status(201).json({ success: true, id: result.rows[0].id });
   } catch (error) {
@@ -252,7 +295,7 @@ router.post('/plans', isAdmin, async (req, res) => {
 router.put('/plans/:id', isAdmin, async (req, res) => {
   try {
     const planId = req.params.id;
-    const { provider, size, price } = req.body;
+    const { provider, size, price, custom } = req.body;
     
     // Validate plan ID
     if (isNaN(parseInt(planId))) {
@@ -269,8 +312,32 @@ router.put('/plans/:id', isAdmin, async (req, res) => {
       });
     }
     
-    const query = 'UPDATE data_plans SET provider = $1, size = $2, price = $3 WHERE id = $4';
-    await db.query(query, [provider, size, price, planId]);
+    // Normalize custom to proper boolean if provided - no numeric conversions
+    let customValue;
+    if (custom !== undefined) {
+      if (custom === true || custom === false) {
+        customValue = custom; // Already a boolean
+      } else if (custom === 'true' || custom === 'yes') {
+        customValue = true;
+      } else if (custom === 'false' || custom === 'no') {
+        customValue = false;
+      } else {
+        customValue = undefined; // Don't update if unclear
+      }
+    }
+    
+    // Build query dynamically based on whether custom is provided
+    let query, params;
+    if (customValue !== undefined) {
+      console.log('UPDATE CUSTOM DEBUG:', customValue, typeof customValue);
+      query = 'UPDATE data_plans SET provider = $1, size = $2, price = $3, custom = $4 WHERE id = $5';
+      params = [provider, size, price, customValue, planId];
+    } else {
+      query = 'UPDATE data_plans SET provider = $1, size = $2, price = $3 WHERE id = $4';
+      params = [provider, size, price, planId];
+    }
+    
+    await db.query(query, params);
     
     res.json({ success: true, message: 'Plan updated successfully' });
   } catch (error) {

@@ -4,11 +4,11 @@ const bcrypt = require('bcrypt');
 class User {
   // Create a new user
   static async create(userData) {
-    const { full_name, email, password, phone } = userData;
+    const { full_name, email, password, phone, role = 'user' } = userData;
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    const query = 'INSERT INTO users (full_name, email, password, phone) VALUES ($1, $2, $3, $4) RETURNING id';
-    const values = [full_name, email, hashedPassword, phone];
+    const query = 'INSERT INTO users (full_name, email, password, phone, role) VALUES ($1, $2, $3, $4, $5) RETURNING id';
+    const values = [full_name, email, hashedPassword, phone, role];
     
     try {
       const result = await db.query(query, values);

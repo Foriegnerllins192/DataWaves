@@ -9,62 +9,505 @@
   <meta name="robots" content="index, follow">
   <title>MTN Data Plans - DataWaves | Buy MTN Mobile Data</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <!-- Navbar -->
+  <!-- Modern Navbar -->
   <nav class="navbar">
-    <div class="logo"><a href="index.html">DataWaves</a></div>
-    <ul class="nav-links">
-      <li><a href="mtn.html"><img src="images/mtn.png" alt="MTN" title="MTN Ghana"/></a></li>
-      <li><a href="telecel.html"><img src="images/telecel.png" alt="Telecel" title="Telecel Ghana"/></a></li>
-      <li><a href="at.html"><img src="images/airteltigo.png" alt="AirtelTigo" title="AirtelTigo Ghana"/></a></li>
-    </ul>
-    <div class="auth-links">
-      <!-- User info will be displayed here after login -->
-      <div id="user-info" style="display: none;">
-        <a href="account.html" class="btn-dashboard" id="user-button" style="background-color: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none;"></a>
-        | <a href="#" onclick="logout()" class="btn-logout">Logout</a>
-      </div>
-      <!-- Default auth links for logged out users -->
-      <div id="auth-links-default">
-        <a href="login.html" class="btn-login">Login</a> | <a href="register.html" class="btn-register">Register</a>
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">DW</div>
+        <div class="brand-text">DataWaves</div>
+      </a>
+      
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="mtn.html" class="nav-link">
+            <img src="images/mtn.png" alt="MTN">
+            <span class="nav-tooltip">MTN Ghana</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="telecel.html" class="nav-link">
+            <img src="images/telecel.png" alt="Telecel">
+            <span class="nav-tooltip">Telecel Ghana</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="at.html" class="nav-link">
+            <img src="images/airteltigo.png" alt="AirtelTigo">
+            <span class="nav-tooltip">AirtelTigo Ghana</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="navbar-actions">
+        <!-- User info will be displayed here after login -->
+        <div id="user-info" class="user-menu" style="display: none;">
+          <a href="account.html" class="user-button" id="user-button">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <span id="user-name">Account</span>
+          </a>
+          <a href="#" onclick="logout()" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </a>
+        </div>
+        
+        <!-- Default auth links for logged out users -->
+        <div id="auth-links-default" class="auth-buttons">
+          <a href="login.html" class="auth-btn login">
+            <i class="fas fa-sign-in-alt"></i>
+            Login
+          </a>
+          <a href="register.html" class="auth-btn register">
+            <i class="fas fa-user-plus"></i>
+            Register
+          </a>
+          <a href="account.html" class="auth-btn account">
+            <i class="fas fa-user"></i>
+            Account
+          </a>
+        </div>
+        
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
     </div>
   </nav>
 
-  <!-- Centered Header -->
-  <header class="centered-header">
-    <h1>MTN Data Plans</h1>
-    <p>Fast, easy, and affordable MTN mobile data bundles.</p>
-  </header>
-
-  <!-- MTN Plans Section -->
-  <section class="container">
-    <h2 style="color: #f7931e;"><img src="images/mtn.png" alt="MTN" style="width: 80px;"> MTN Data Plans</h2>
-    
-    <div class="plans-list">
-      <div class="plan"><h4>1GB</h4><p><strong>Price:</strong> GHC 5.50</p></div>
-      <div class="plan"><h4>3GB</h4><p><strong>Price:</strong> GHC 8.50</p></div>
-      <div class="plan"><h4>5GB</h4><p><strong>Price:</strong> GHC 15</p></div>
-      <div class="plan"><h4>10GB</h4><p><strong>Price:</strong> GHC 25</p></div>
-      <div class="plan"><h4>15GB</h4><p><strong>Price:</strong> GHC 35</p></div>
-      <div class="plan"><h4>25GB</h4><p><strong>Price:</strong> GHC 60</p></div>
-      <div class="plan"><h4>45GB</h4><p><strong>Price:</strong> GHC 100</p></div>
-      <div class="plan"><h4>55GB</h4><p><strong>Price:</strong> GHC 130</p></div>
-      <div class="plan"><h4>65GB</h4><p><strong>Price:</strong> GHC 150</p></div>
-      <div class="plan"><h4>73GB</h4><p><strong>Price:</strong> GHC 170</p></div>
-      <div class="plan"><h4>80GB</h4><p><strong>Price:</strong> GHC 180</p></div>
-      <div class="plan"><h4>90GB</h4><p><strong>Price:</strong> GHC 190</p></div>
-      <div class="plan"><h4>93GB</h4><p><strong>Price:</strong> GHC 200</p></div>
-      <div class="plan"><h4>100GB</h4><p><strong>Price:</strong> GHC 230</p></div>
-      <div class="plan"><h4>105GB</h4><p><strong>Price:</strong> GHC 260</p></div>
-      <div class="plan"><h4>110GB</h4><p><strong>Price:</strong> GHC 280</p></div>
-      <div class="plan"><h4>120GB</h4><p><strong>Price:</strong> GHC 300</p></div>
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    <!-- Network Hero Section -->
+  <section class="network-hero mtn-gradient">
+    <div class="container">
+      <div class="network-hero-content">
+        <div class="network-info">
+          <img src="images/mtn.png" alt="MTN Ghana" class="network-logo">
+          <div class="network-details">
+            <h1>MTN Ghana Data Plans</h1>
+            <p>Ghana's leading network with the widest coverage and fastest speeds. Get instant data delivery with our reliable MTN bundles.</p>
+            <div class="network-features">
+              <div class="feature-item">
+                <i class="fas fa-signal"></i>
+                <span>Best Coverage</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-bolt"></i>
+                <span>Fast Speeds</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Reliable Network</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-action">
+          <a href="buy-plan.html?network=mtn" class="hero-cta-btn">
+            <i class="fas fa-shopping-cart"></i>
+            Buy MTN Data Now
+          </a>
+        </div>
+      </div>
     </div>
-    
-    <a href="buy-plan.html?network=mtn" class="buy-btn full-width">Buy MTN DATA</a>
   </section>
 
+  <!-- Plans Section -->
+  <section class="network-plans-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Available MTN Data Plans</h2>
+        <p>Choose the perfect data bundle for your needs</p>
+      </div>
+      
+      <!-- Loading indicator -->
+      <div id="plansLoading" class="loading-container">
+        <div class="loading-spinner mtn-spinner"></div>
+        <p>Loading MTN data plans...</p>
+      </div>
+
+      <!-- Plans container -->
+      <div class="modern-plans-grid" id="mtnPlans" style="display: none;">
+        <!-- MTN plans will be loaded here -->
+      </div>
+
+      <!-- Buy button -->
+      <div class="plans-cta" id="buyButtonContainer" style="display: none;">
+        <a href="buy-plan.html?network=mtn" class="network-buy-btn mtn-btn">
+          <i class="fas fa-shopping-cart"></i>
+          Purchase MTN Data Bundle
+        </a>
+      </div>
+
+      <!-- Error message -->
+      <div id="plansError" class="error-container" style="display: none;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Unable to Load Plans</h3>
+        <p>We're having trouble loading MTN data plans. Please try again.</p>
+        <button onclick="location.reload()" class="retry-btn">
+          <i class="fas fa-redo"></i>
+          Retry
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MTN Delivery Details Section -->
+  <section class="delivery-details-section">
+    <div class="container">
+      <div class="delivery-details-header">
+        <h2><i class="fas fa-info-circle"></i> MTN Data Delivery Information</h2>
+        <p>Everything you need to know about MTN data delivery</p>
+      </div>
+      
+      <div class="delivery-details-grid">
+        <!-- Delivery Time -->
+        <div class="delivery-detail-card">
+          <div class="detail-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Delivery Time</h3>
+          <div class="detail-content">
+            <div class="time-info">
+              <span class="time-primary">15-20 Minutes</span>
+              <span class="time-label">Average delivery time</span>
+            </div>
+            <ul class="time-details">
+              <li><i class="fas fa-check"></i> Normal hours: 10-20 minutes</li>
+              <li><i class="fas fa-clock"></i> Peak hours: 20-30 minutes</li>
+              <li><i class="fas fa-moon"></i> Night time: 5-15 minutes</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- SIM Compatibility -->
+        <div class="delivery-detail-card">
+          <div class="detail-icon">
+            <i class="fas fa-sim-card"></i>
+          </div>
+          <h3>SIM Compatibility</h3>
+          <div class="detail-content">
+            <div class="compatibility-status">
+              <span class="status-badge success">All MTN SIMs Supported</span>
+            </div>
+            <ul class="compatibility-list">
+              <li><i class="fas fa-check-circle text-success"></i> MTN Prepaid SIMs</li>
+              <li><i class="fas fa-check-circle text-success"></i> MTN Postpaid SIMs</li>
+              <li><i class="fas fa-check-circle text-success"></i> Old & New SIM cards</li>
+              <li><i class="fas fa-check-circle text-success"></i> No age restrictions</li>
+              <li><i class="fas fa-times-circle text-muted"></i> <span class="text-muted">No special SIM requirements</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Supported Numbers -->
+        <div class="delivery-detail-card">
+          <div class="detail-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3>Supported Numbers</h3>
+          <div class="detail-content">
+            <div class="number-prefixes">
+              <div class="prefix-item">
+                <span class="prefix">024</span>
+                <span class="prefix-label">XXXXXXX</span>
+              </div>
+              <div class="prefix-item">
+                <span class="prefix">054</span>
+                <span class="prefix-label">XXXXXXX</span>
+              </div>
+              <div class="prefix-item">
+                <span class="prefix">055</span>
+                <span class="prefix-label">XXXXXXX</span>
+              </div>
+              <div class="prefix-item">
+                <span class="prefix">059</span>
+                <span class="prefix-label">XXXXXXX</span>
+              </div>
+            </div>
+            <p class="prefix-note">All MTN Ghana numbers are supported regardless of when they were registered</p>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="delivery-detail-card">
+          <div class="detail-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3>Delivery Notifications</h3>
+          <div class="detail-content">
+            <div class="notification-types">
+              <div class="notification-item">
+                <i class="fas fa-sms text-primary"></i>
+                <span>SMS Notification</span>
+                <small>Sent to your phone number</small>
+              </div>
+              <div class="notification-item">
+                <i class="fas fa-envelope text-info"></i>
+                <span>Email Notification</span>
+                <small>Sent to your account email</small>
+              </div>
+            </div>
+            <p class="notification-note">You'll receive both SMS and email confirmations when your data is delivered</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Important Notes -->
+      <div class="important-notes-section">
+        <h3><i class="fas fa-exclamation-triangle"></i> Important Notes for MTN Users</h3>
+        <div class="notes-grid">
+          <div class="note-card success">
+            <i class="fas fa-check-circle"></i>
+            <div class="note-content">
+              <h4>No SIM Restrictions</h4>
+              <p>We don't check for merchant SIM, EVD SIM, or any special SIM types. All MTN SIMs work!</p>
+            </div>
+          </div>
+          <div class="note-card info">
+            <i class="fas fa-shield-alt"></i>
+            <div class="note-content">
+              <h4>Secure Delivery</h4>
+              <p>Data is delivered directly through MTN's official channels for maximum security and reliability.</p>
+            </div>
+          </div>
+          <div class="note-card warning">
+            <i class="fas fa-clock"></i>
+            <div class="note-content">
+              <h4>Peak Hour Delays</h4>
+              <p>During peak hours (6-9 PM), delivery may take up to 30 minutes due to high network traffic.</p>
+            </div>
+          </div>
+          <div class="note-card primary">
+            <i class="fas fa-redo"></i>
+            <div class="note-content">
+              <h4>Failed Delivery Refund</h4>
+              <p>If delivery fails, you'll receive an automatic refund within 24 hours to your payment method.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Company Info -->
+        <div class="footer-section">
+          <div class="footer-brand">
+            <div class="brand-icon">DW</div>
+            <div class="brand-text">DataWaves</div>
+          </div>
+          <p class="footer-description">
+            Your trusted partner for MTN data bundles in Ghana. Fast, reliable, and secure data delivery.
+          </p>
+          <div class="footer-stats">
+            <div class="footer-stat">
+              <i class="fas fa-clock"></i>
+              <span>15-20 Min Delivery</span>
+            </div>
+            <div class="footer-stat">
+              <i class="fas fa-shield-alt"></i>
+              <span>100% Secure</span>
+            </div>
+            <div class="footer-stat">
+              <i class="fas fa-headset"></i>
+              <span>24/7 Support</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MTN Specific Info -->
+        <div class="footer-section">
+          <h3>MTN Ghana Details</h3>
+          <div class="mtn-info">
+            <div class="info-item">
+              <i class="fas fa-mobile-alt"></i>
+              <span>Prefixes: 024, 054, 055, 059</span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-sim-card"></i>
+              <span>All SIM types supported</span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <span>Average delivery: 15-20 minutes</span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-bell"></i>
+              <span>SMS & Email notifications</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="buy-plan.html?network=mtn"><i class="fas fa-shopping-cart"></i> Buy MTN Data</a></li>
+            <li><a href="telecel.html"><i class="fas fa-exchange-alt"></i> Switch to Telecel</a></li>
+            <li><a href="at.html"><i class="fas fa-exchange-alt"></i> Switch to AirtelTigo</a></li>
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> My Dashboard</a></li>
+          </ul>
+        </div>
+
+        <!-- Support -->
+        <div class="footer-section">
+          <h3>Support</h3>
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>+233 20 849 4123</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>support@datawaves.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-clock"></i>
+              <span>24/7 Customer Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-content">
+          <div class="footer-left">
+            <p>&copy; 2026 DataWaves. All rights reserved.</p>
+            <p>Licensed MTN data provider in Ghana</p>
+          </div>
+          <div class="footer-right">
+            <div class="payment-methods">
+              <span>Secured by:</span>
+              <img src="https://paystack.com/assets/img/logo/paystack-logo-blue.svg" alt="Paystack" class="payment-logo">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   <script src="script.js"></script>
+  <script>
+    // Load MTN plans from database
+    document.addEventListener('DOMContentLoaded', function() {
+      loadMTNPlans();
+      checkAuthStatus();
+    });
+
+    async function loadMTNPlans() {
+      try {
+        const response = await fetch('/api/plans?provider=mtn');
+        if (!response.ok) {
+          throw new Error('Failed to fetch MTN plans');
+        }
+        
+        const plans = await response.json();
+        const plansContainer = document.getElementById('mtnPlans');
+        
+        if (plans && plans.length > 0) {
+          plansContainer.innerHTML = '';
+          
+          plans.forEach(plan => {
+            const planElement = document.createElement('div');
+            planElement.className = 'modern-plan-card';
+            planElement.innerHTML = `
+              <div class="plan-header">
+                <div class="plan-size">${plan.size}<span>GB</span></div>
+                <div class="plan-price">GHC ${parseFloat(plan.customer_price || plan.price).toFixed(2)}</div>
+              </div>
+              <div class="plan-details">
+                <div class="plan-features">
+                  <div class="feature"><i class="fas fa-check"></i> Instant activation</div>
+                  <div class="feature"><i class="fas fa-check"></i> No expiry rollover</div>
+                </div>
+              </div>
+            `;
+            plansContainer.appendChild(planElement);
+          });
+          
+          // Hide loading and show plans
+          document.getElementById('plansLoading').style.display = 'none';
+          document.getElementById('mtnPlans').style.display = 'grid';
+          document.getElementById('buyButtonContainer').style.display = 'block';
+        } else {
+          throw new Error('No MTN plans available');
+        }
+        
+      } catch (error) {
+        console.error('Error loading MTN plans:', error);
+        document.getElementById('plansLoading').style.display = 'none';
+        document.getElementById('plansError').style.display = 'block';
+      }
+    }
+
+    // Check authentication status
+    function checkAuthStatus() {
+      fetch('/api/user')
+        .then(res => res.json())
+        .then(user => {
+          if (!user.error) {
+            // Show user info
+            if (document.getElementById('user-info')) {
+              document.getElementById('user-info').style.display = 'flex';
+            }
+            if (document.getElementById('auth-links-default')) {
+              document.getElementById('auth-links-default').style.display = 'none';
+            }
+            if (document.getElementById('user-name')) {
+              document.getElementById('user-name').textContent = user.full_name || 'Account';
+            }
+            if (document.getElementById('user-avatar')) {
+              const avatar = document.getElementById('user-avatar');
+              avatar.textContent = (user.full_name || 'User').charAt(0).toUpperCase();
+            }
+          }
+        })
+        .catch(err => {
+          console.error('Error checking auth status:', err);
+        });
+    }
+
+    // Logout function
+    function logout() {
+      fetch('/api/logout', { method: 'POST' })
+        .then(res => res.json())
+        .then(response => {
+          if (response.success) {
+            window.location.href = "index.html";
+          }
+        })
+        .catch(err => {
+          console.error('Logout error:', err);
+          window.location.href = "index.html";
+        });
+    }
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const navbarNav = document.querySelector('.navbar-nav');
+      const authButtons = document.querySelector('#auth-links-default');
+      navbarNav.classList.toggle('show');
+      if (authButtons) {
+        authButtons.classList.toggle('show');
+      }
+    }
+
+    // Add CSS for loading spinner
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>
