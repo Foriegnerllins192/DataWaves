@@ -58,34 +58,99 @@ router.post('/register', async (req, res) => {
 // Login endpoint
 router.post('/login', async (req, res) => {
   try {
+    // 1. Basic Input Validation
+    if (!req.body) {
+      console.warn('Login attempt with missing body');
+      return res.status(400).json({ error: 'Request body is missing' });
+    }
+
     const { email, password } = req.body;
     
-    // Validate email
+    // Check for missing fields
+    if (!email || !password) {
+      console.warn('Login attempt with missing email or password');
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+    
+    // 2. Validate email format
     const emailValidation = validationService.validateEmail(email);
     if (!emailValidation.valid) {
+      console.warn(`Login failed: Invalid email format for input: ${email}`);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     
-    // Find user by email
-    const user = await User.findByEmail(emailValidation.email);
+    // 3. Find user by email (Database Interaction)
+    let user;
+    try {
+      // Log that we are attempting a DB query (without PII if possible, or minimal PII)
+      console.log(`Attempting to find user for login: ${email}`);
+      user = await User.findByEmail(emailValidation.email);
+    } catch (dbError) {
+      console.error('DATABASE ERROR during login lookup:', dbError);
+      // Throwing here ensures it's caught by the outer catch block and returns 500
+      throw new Error('Database service unavailable');
+    }
+
+    // 4. Handle User Not Found
     if (!user) {
+      console.warn(`Login failed: User not found for email: ${email}`);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     
-    // Verify password
-    const isPasswordValid = await User.verifyPassword(password, user.password);
+    // 5. Verify password
+    // Ensure user has a password field (sanity check for DB integrity)
+    if (!user.password) {
+      console.error(`CRITICAL DATA INTEGRITY ERROR: User ${user.id} exists but has no password hash.`);
+      return res.status(500).json({ error: 'Account data corrupted. Please contact support.' });
+    }
+
+    let isPasswordValid = false;
+    try {
+      isPasswordValid = await User.verifyPassword(password, user.password);
+    } catch (bcryptError) {
+      console.error('BCRYPT ERROR:', bcryptError);
+      throw new Error('Password verification service failed');
+    }
+
     if (!isPasswordValid) {
+      console.warn(`Login failed: Invalid password for user: ${email}`);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     
+    // 6. Session Management
+    // Verify session middleware is active
+    if (!req.session) {
+      console.error('CRITICAL SERVER ERROR: req.session is undefined. Session middleware is not configured correctly.');
+      throw new Error('Session service unavailable');
+    }
+
     // Store user in session (exclude password)
     const { password: _, ...userWithoutPassword } = user;
     req.session.user = userWithoutPassword;
     
-    res.json({ success: true, user: userWithoutPassword });
+    // Explicitly save session to handle potential race conditions or store errors
+    req.session.save((err) => {
+      if (err) {
+        console.error('SESSION SAVE ERROR:', err);
+        return res.status(500).json({ error: 'Login session creation failed' });
+      }
+      
+      console.log(`Login successful for user: ${email}`);
+      res.json({ success: true, user: userWithoutPassword });
+    });
+
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    // 7. Global Error Handler for this route
+    console.error('LOGIN ROUTE EXCEPTION:', error);
+    
+    // Ensure we don't send a response if one was already sent (headersSent check)
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        error: 'Internal server error',
+        // In production, don't show specific error details to client, but log them above
+        message: 'An unexpected error occurred during login' 
+      });
+    }
   }
 });
 

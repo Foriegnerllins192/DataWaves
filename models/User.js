@@ -26,6 +26,7 @@ class User {
       const result = await db.query(query, [email]);
       return result.rows[0];
     } catch (error) {
+      console.error(`DB Error in findByEmail for ${email}:`, error);
       throw error;
     }
   }
@@ -38,13 +39,23 @@ class User {
       const result = await db.query(query, [id]);
       return result.rows[0];
     } catch (error) {
+      console.error(`DB Error in findById for ${id}:`, error);
       throw error;
     }
   }
 
   // Verify password
   static async verifyPassword(plainPassword, hashedPassword) {
-    return await bcrypt.compare(plainPassword, hashedPassword);
+    if (!plainPassword || !hashedPassword) {
+        console.warn('verifyPassword called with missing arguments');
+        return false;
+    }
+    try {
+        return await bcrypt.compare(plainPassword, hashedPassword);
+    } catch (err) {
+        console.error('Bcrypt comparison error:', err);
+        return false;
+    }
   }
 
   // Get all users (for admin)
