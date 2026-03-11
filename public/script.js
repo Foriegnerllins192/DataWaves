@@ -27,12 +27,10 @@ function initializeNavbar() {
       if (user && !user.error) {
         // User is logged in
         if (userInfo) {
-          userInfo.style.display = '';
-          userInfo.classList.remove('d-none');
+          userInfo.style.display = 'block';
         }
         if (authLinksDefault) {
-          authLinksDefault.style.display = '';
-          authLinksDefault.classList.add('d-none');
+          authLinksDefault.style.display = 'none';
         }
         if (userButton) {
           userButton.textContent = user.full_name || 'User';
@@ -41,12 +39,10 @@ function initializeNavbar() {
       } else {
         // User is not logged in
         if (userInfo) {
-          userInfo.style.display = '';
-          userInfo.classList.add('d-none');
+          userInfo.style.display = 'none';
         }
         if (authLinksDefault) {
-          authLinksDefault.style.display = '';
-          authLinksDefault.classList.remove('d-none');
+          authLinksDefault.style.display = 'block';
         }
       }
     })
@@ -56,12 +52,10 @@ function initializeNavbar() {
       const authLinksDefault = document.getElementById('auth-links-default');
       
       if (userInfo) {
-        userInfo.style.display = '';
-        userInfo.classList.add('d-none');
+        userInfo.style.display = 'none';
       }
       if (authLinksDefault) {
-        authLinksDefault.style.display = '';
-        authLinksDefault.classList.remove('d-none');
+        authLinksDefault.style.display = 'block';
       }
     });
 }
